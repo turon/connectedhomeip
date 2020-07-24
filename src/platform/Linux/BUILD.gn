@@ -19,3 +19,7 @@ import("//build/config/linux/pkg_config.gni")
 pkg_config("gio") {
   packages = [ "gio-2.0" ]
 }
+
+pkg_config("dbus") {
+  packages = [ "dbus-1" ]
+}
