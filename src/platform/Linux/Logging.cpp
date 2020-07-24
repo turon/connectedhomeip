@@ -75,7 +75,7 @@ void LogV(uint8_t module, uint8_t category, const char * msg, va_list v)
 
 extern "C" void otPlatLog(otLogLevel aLogLevel, otLogRegion aLogRegion, const char * aFormat, ...)
 {
-    OT_UNUSED_VARIABLE(aLogRegion);
+    // OT_UNUSED_VARIABLE(aLogRegion);
 
     va_list args;
 

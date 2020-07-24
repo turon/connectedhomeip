@@ -15,20 +15,10 @@
 import("//build_overrides/chip.gni")
 import("//build_overrides/nlio.gni")
 
-import("//build/config/linux/pkg_config.gni")
-
 import("device.gni")
 
 if (device_platform == "nrf5") {
   import("//build_overrides/nrf5_sdk.gni")
-}
-
-if (host_os == "linux") {
-  import("//build/config/linux/pkg_config.gni")
-
-  pkg_config("dbus") {
-    packages = [ "dbus-1" ]
-  }
 }
 
 if (device_platform != "none") {
@@ -56,6 +46,7 @@ if (device_platform != "none") {
       ]
 
       configs += ["${chip_root}/src/platform/Linux:gio"]
+      configs += ["${chip_root}/src/platform/Linux:dbus"]
     } else {
       defines += [ "CHIP_DEVICE_LAYER_TARGET_LINUX=0" ]
     }
@@ -127,6 +118,10 @@ if (device_platform != "none") {
 
     if (chip_enable_openthread) {
       sources += [ "OpenThread/OpenThreadUtils.cpp" ]
+
+      public_deps += [
+        "${chip_root}/third_party/openthread:lib-ot-core"
+      ]
     }
 
     if (device_platform == "linux") {
@@ -162,9 +157,6 @@ if (device_platform != "none") {
         ]
         public_deps += [
           "${chip_root}/third_party/ot-br-posix"
-        ]
-        public_configs += [
-          ":dbus"
         ]
       }
 

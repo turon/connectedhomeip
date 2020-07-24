@@ -15,6 +15,7 @@
  *    limitations under the License.
  */
 
+#include <array>
 #include <limits.h>
 #include <string.h>
 
