@@ -22,14 +22,10 @@ if (device_platform == "nrf5") {
 }
 
 if (host_os == "linux") {
-  config("dbus") {
-    # libdbus-1.so is the name of the dev library.
-    libs = [ "dbus-1" ]
+  import("//build/config/linux/pkg_config.gni")
 
-    include_dirs = [
-      "/usr/include/dbus-1.0",
-      "/usr/lib/x86_64-linux-gnu/dbus-1.0/include"  # << Bad news
-    ]
+  pkg_config("dbus") {
+    packages = [ "dbus-1" ]
   }
 }
 
