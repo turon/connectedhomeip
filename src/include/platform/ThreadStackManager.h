@@ -80,7 +80,6 @@ private:
 
     friend class PlatformManagerImpl;
     friend class ConfigurationManagerImpl;
-    friend class Internal::BLEManagerImpl;
     friend class Internal::DeviceControlServer;
     template <class>
     friend class Internal::GenericPlatformManagerImpl;

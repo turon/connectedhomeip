@@ -21,6 +21,18 @@ if (device_platform == "nrf5") {
   import("//build_overrides/nrf5_sdk.gni")
 }
 
+if (host_os == "linux") {
+  config("dbus") {
+    # libdbus-1.so is the name of the dev library.
+    libs = [ "dbus-1" ]
+
+    include_dirs = [
+      "/usr/include/dbus-1.0",
+      "/usr/lib/x86_64-linux-gnu/dbus-1.0/include"  # << Bad news
+    ]
+  }
+}
+
 if (device_platform != "none") {
   declare_args() {
     # Extra header to include in CHIPDeviceConfig.h for project.
@@ -147,6 +159,12 @@ if (device_platform != "none") {
         sources += [
           "Linux/ThreadStackManagerImpl.cpp",
           "Linux/ThreadStackManagerImpl.h",
+        ]
+        public_deps += [
+          "${chip_root}/third_party/ot-br-posix"
+        ]
+        public_configs += [
+          ":dbus"
         ]
       }
 
