@@ -78,14 +78,14 @@ constexpr size_t kVendorIdSizeBytes = 2;
 constexpr size_t kAckIdSizeBytes = 4;
 
 /// Mask to extract just the version part from a 16bit header prefix.
-constexpr uint16_t kVersionMask = 0xF000;
+constexpr uint8_t kVersionMask = 0xF0;
 /// Shift to convert to/from a masked version 16bit value to a 4bit version.
-constexpr int kVersionShift = 12;
+constexpr int kVersionShift = 4;
 
 /// Mask to extract just the encryption type part from a 16bit header prefix.
-constexpr uint16_t kEncryptionTypeMask = 0xF0;
+constexpr uint8_t kEncryptionTypeMask = 0x03;
 /// Shift to convert to/from a masked encryption type 16bit value to a 4bit encryption type.
-constexpr int kEncryptionTypeShift = 4;
+constexpr int kEncryptionTypeShift = 0;
 
 } // namespace
 
@@ -131,13 +131,7 @@ uint16_t MessageAuthenticationCode::TagLenForEncryptionType(Header::EncryptionTy
 {
     switch (encType)
     {
-    case Header::EncryptionType::kAESCCMTagLen8:
-        return 8;
-
-    case Header::EncryptionType::kAESCCMTagLen12:
-        return 12;
-
-    case Header::EncryptionType::kAESCCMTagLen16:
+    case Header::EncryptionType::kEncryptionType_AEAD:
         return 16;
 
     default:
@@ -152,19 +146,25 @@ CHIP_ERROR PacketHeader::Decode(const uint8_t * const data, uint16_t size, uint1
     int version;
     uint16_t octets_read;
 
-    uint16_t header;
-    err = reader.Read16(&header).StatusCode();
+    uint8_t flags;
+    err = reader.Read8(&flags).StatusCode();
     SuccessOrExit(err);
-    version = ((header & kVersionMask) >> kVersionShift);
+    mMsgFlags.SetRaw(flags);
+    version = ((flags & kVersionMask) >> kVersionShift);
     VerifyOrExit(version == kHeaderVersion, err = CHIP_ERROR_VERSION_MISMATCH);
 
-    mEncryptionType = static_cast<Header::EncryptionType>((header & kEncryptionTypeMask) >> kEncryptionTypeShift);
-    mFlags.SetRaw(header & Header::kFlagsMask);
+    err = reader.Read8(&flags).StatusCode();
+    SuccessOrExit(err);
+    mSecFlags.SetRaw(flags);
+    mEncryptionType = static_cast<Header::EncryptionType>((flags & kEncryptionTypeMask) >> kEncryptionTypeShift);
+
+    //mEncryptionType = static_cast<Header::EncryptionType>((header & kEncryptionTypeMask) >> kEncryptionTypeShift);
+    //mFlags.SetRaw(header & Header::kFlagsMask);
 
     err = reader.Read32(&mMessageId).StatusCode();
     SuccessOrExit(err);
 
-    if (mFlags.Has(Header::FlagValues::kSourceNodeIdPresent))
+    if (mMsgFlags.Has(Header::MsgFlagValues::kSourceNodeIdPresent))
     {
         uint64_t sourceNodeId;
         err = reader.Read64(&sourceNodeId).StatusCode();
@@ -176,7 +176,7 @@ CHIP_ERROR PacketHeader::Decode(const uint8_t * const data, uint16_t size, uint1
         mSourceNodeId.ClearValue();
     }
 
-    if (mFlags.Has(Header::FlagValues::kDestinationNodeIdPresent))
+    if (mMsgFlags.Has(Header::MsgFlagValues::kDestinationNodeIdPresent))
     {
         uint64_t destinationNodeId;
         err = reader.Read64(&destinationNodeId).StatusCode();
@@ -272,15 +272,16 @@ CHIP_ERROR PacketHeader::Encode(uint8_t * data, uint16_t size, uint16_t * encode
 {
     VerifyOrReturnError(size >= EncodeSizeBytes(), CHIP_ERROR_INVALID_ARGUMENT);
 
-    Header::Flags encodeFlags = mFlags;
-    encodeFlags.Set(Header::FlagValues::kSourceNodeIdPresent, mSourceNodeId.HasValue())
-        .Set(Header::FlagValues::kDestinationNodeIdPresent, mDestinationNodeId.HasValue());
+    //Header::Flags encodeFlags = mFlags;
+    //encodeFlags.Set(Header::FlagValues::kSourceNodeIdPresent, mSourceNodeId.HasValue())
+    //    .Set(Header::FlagValues::kDestinationNodeIdPresent, mDestinationNodeId.HasValue());
 
-    uint16_t header = (kHeaderVersion << kVersionShift) | encodeFlags.Raw();
-    header |= (static_cast<uint16_t>(static_cast<uint16_t>(mEncryptionType) << kEncryptionTypeShift) & kEncryptionTypeMask);
+    //uint16_t header = (kHeaderVersion << kVersionShift) | encodeFlags.Raw();
+    //header |= (static_cast<uint16_t>(static_cast<uint16_t>(mEncryptionType) << kEncryptionTypeShift) & kEncryptionTypeMask);
 
     uint8_t * p = data;
-    LittleEndian::Write16(p, header);
+    Write8(p, mMsgFlags.Raw() | (kHeaderVersion << kVersionShift));
+    Write8(p, mSecFlags.Raw() | (static_cast<uint8_t>(mEncryptionType) & kEncryptionTypeMask));
     LittleEndian::Write32(p, mMessageId);
     if (mSourceNodeId.HasValue())
     {

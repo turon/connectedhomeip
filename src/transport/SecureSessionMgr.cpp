@@ -315,7 +315,7 @@ void SecureSessionMgr::OnMessageReceived(const PeerAddress & peerAddress, System
 
     ReturnOnFailure(packetHeader.DecodeAndConsume(msg));
 
-    if (packetHeader.GetFlags().Has(Header::FlagValues::kSecure))
+    if (packetHeader.GetSecFlags().Has(Header::SecFlagValues::kSecure))
     {
         SecureMessageDispatch(packetHeader, peerAddress, std::move(msg));
     }
@@ -360,7 +360,7 @@ void SecureSessionMgr::SecureMessageDispatch(const PacketHeader & packetHeader, 
     }
 
     // Verify message counter
-    if (packetHeader.GetFlags().Has(Header::FlagValues::kSecureSessionControlMessage))
+    if (packetHeader.GetSecFlags().Has(Header::SecFlagValues::kSecureSessionControlMessage))
     {
         // TODO: control message counter is not implemented yet
     }
@@ -428,7 +428,7 @@ void SecureSessionMgr::SecureMessageDispatch(const PacketHeader & packetHeader, 
     VerifyOrExit(CHIP_NO_ERROR == SecureMessageCodec::Decode(state, payloadHeader, packetHeader, msg),
                  ChipLogError(Inet, "Secure transport received message, but failed to decode it, discarding"));
 
-    if (packetHeader.GetFlags().Has(Header::FlagValues::kSecureSessionControlMessage))
+    if (packetHeader.GetSecFlags().Has(Header::SecFlagValues::kSecureSessionControlMessage))
     {
         // TODO: control message counter is not implemented yet
     }

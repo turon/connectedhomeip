@@ -133,7 +133,7 @@ CHIP_ERROR SecureSession::Encrypt(const uint8_t * input, size_t input_length, ui
                                   MessageAuthenticationCode & mac) const
 {
 
-    constexpr Header::EncryptionType encType = Header::EncryptionType::kAESCCMTagLen16;
+    constexpr Header::EncryptionType encType = Header::EncryptionType::kEncryptionType_AEAD;
 
     const size_t taglen = MessageAuthenticationCode::TagLenForEncryptionType(encType);
     assert(taglen <= kMaxTagLen);

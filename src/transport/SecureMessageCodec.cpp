@@ -58,7 +58,7 @@ CHIP_ERROR Encode(NodeId localNodeId, Transport::PeerConnectionState * state, Pa
         packetHeader.SetDestinationNodeId(state->GetPeerNodeId());
     }
 
-    packetHeader.GetFlags().Set(Header::FlagValues::kSecure);
+    packetHeader.GetSecFlags().Set(Header::SecFlagValues::kSecure);
 
     ReturnErrorOnFailure(payloadHeader.EncodeBeforeData(msgBuf));
 

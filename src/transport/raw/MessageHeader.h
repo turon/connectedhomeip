@@ -47,9 +47,8 @@ namespace Header {
 
 enum class EncryptionType
 {
-    kAESCCMTagLen8  = 0,
-    kAESCCMTagLen12 = 1,
-    kAESCCMTagLen16 = 2,
+    kEncryptionType_None = 0,
+    kEncryptionType_AEAD = 1,           ///< AES128-CCM w/ 128-bit tag
 };
 
 /**
@@ -71,26 +70,40 @@ enum class ExFlagValues : uint8_t
     kExchangeFlag_VendorIdPresent = 0x10,
 };
 
-enum class FlagValues : uint16_t
+enum class MsgFlagValues : uint8_t
 {
-    /// Header flag specifying that a destination node id is included in the header.
-    kDestinationNodeIdPresent = 0x0100,
-
     /// Header flag specifying that a source node id is included in the header.
-    kSourceNodeIdPresent = 0x0200,
+    kSourceNodeIdPresent = 0x04,
 
-    /// Header flag specifying that it is a control message for secure session.
-    kSecureSessionControlMessage = 0x0800,
+    /// Header flag specifying that a destination group id is included in the header.
+    kDestinationGroupIdPresent = 0x02,
 
-    /// Header flag specifying that it is a encrypted message.
-    kSecure = 0x0001,
+    /// Header flag specifying that a destination node id is included in the header.
+    kDestinationNodeIdPresent = 0x01,
+};
+
+enum class SecFlagValues : uint8_t
+{
+    /// Flag specifying that privacy is enabled on the message header.
+    kSecurePrivacyEnabled = 0x80,
+
+    /// Flag specifying that it is a control message for secure session.
+    kSecureSessionControlMessage = 0x40,
+
+    /// Flag specifying that message extensions are present in header.
+    kSecureMessageExtensions = 0x20,
+
+    /// Flag specifying that it is a encrypted message.
+    kSecure = 0x01,
 
 };
 
-using Flags   = BitFlags<FlagValues>;
+using MsgFlags = BitFlags<MsgFlagValues>;
+using SecFlags = BitFlags<SecFlagValues>;
 using ExFlags = BitFlags<ExFlagValues>;
 
 // Header is a 16-bit value of the form
+//  | MsgFlags        | SecFlags           |
 //  |  4 bit  | 4 bit |8 bit Security Flags|
 //  +---------+-------+--------------------|
 //  | version | Flags | P | C |Reserved| E |
@@ -134,59 +147,62 @@ public:
 
     uint16_t GetEncryptionKeyID() const { return mEncryptionKeyID; }
 
-    Header::Flags & GetFlags() { return mFlags; }
-    const Header::Flags & GetFlags() const { return mFlags; }
+    Header::MsgFlags & GetMsgFlags() { return mMsgFlags; }
+    const Header::MsgFlags & GetMsgFlags() const { return mMsgFlags; }
+
+    Header::SecFlags & GetSecFlags() { return mSecFlags; }
+    const Header::SecFlags & GetSecFlags() const { return mSecFlags; }
 
     /** Check if it's a secure session control message. */
-    bool IsSecureSessionControlMsg() const { return mFlags.Has(Header::FlagValues::kSecureSessionControlMessage); }
+    bool IsSecureSessionControlMsg() const { return mSecFlags.Has(Header::SecFlagValues::kSecureSessionControlMessage); }
 
     Header::EncryptionType GetEncryptionType() const { return mEncryptionType; }
 
     PacketHeader & SetSecureSessionControlMsg(bool value)
     {
-        mFlags.Set(Header::FlagValues::kSecureSessionControlMessage, value);
+        mSecFlags.Set(Header::SecFlagValues::kSecureSessionControlMessage, value);
         return *this;
     }
 
     PacketHeader & SetSourceNodeId(NodeId id)
     {
         mSourceNodeId.SetValue(id);
-        mFlags.Set(Header::FlagValues::kSourceNodeIdPresent);
+        mMsgFlags.Set(Header::MsgFlagValues::kSourceNodeIdPresent);
         return *this;
     }
 
     PacketHeader & SetSourceNodeId(Optional<NodeId> id)
     {
         mSourceNodeId = id;
-        mFlags.Set(Header::FlagValues::kSourceNodeIdPresent, id.HasValue());
+        mMsgFlags.Set(Header::MsgFlagValues::kSourceNodeIdPresent, id.HasValue());
         return *this;
     }
 
     PacketHeader & ClearSourceNodeId()
     {
         mSourceNodeId.ClearValue();
-        mFlags.Clear(Header::FlagValues::kSourceNodeIdPresent);
+        mMsgFlags.Clear(Header::MsgFlagValues::kSourceNodeIdPresent);
         return *this;
     }
 
     PacketHeader & SetDestinationNodeId(NodeId id)
     {
         mDestinationNodeId.SetValue(id);
-        mFlags.Set(Header::FlagValues::kDestinationNodeIdPresent);
+        mMsgFlags.Set(Header::MsgFlagValues::kDestinationNodeIdPresent);
         return *this;
     }
 
     PacketHeader & SetDestinationNodeId(Optional<NodeId> id)
     {
         mDestinationNodeId = id;
-        mFlags.Set(Header::FlagValues::kDestinationNodeIdPresent, id.HasValue());
+        mMsgFlags.Set(Header::MsgFlagValues::kDestinationNodeIdPresent, id.HasValue());
         return *this;
     }
 
     PacketHeader & ClearDestinationNodeId()
     {
         mDestinationNodeId.ClearValue();
-        mFlags.Clear(Header::FlagValues::kDestinationNodeIdPresent);
+        mMsgFlags.Clear(Header::MsgFlagValues::kDestinationNodeIdPresent);
         return *this;
     }
 
@@ -290,7 +306,7 @@ public:
 
 private:
     /// Represents the current encode/decode header version
-    static constexpr int kHeaderVersion = 2;
+    static constexpr uint8_t kHeaderVersion = 0;
 
     /// Value expected to be incremented for each message sent.
     uint32_t mMessageId = 0;
@@ -305,10 +321,13 @@ private:
     uint16_t mEncryptionKeyID = 0;
 
     /// Message flags read from the message.
-    Header::Flags mFlags;
+    Header::MsgFlags mMsgFlags;
+
+    /// Security flags read from the message.
+    Header::SecFlags mSecFlags;
 
     /// Represents encryption type used for encrypting current packet
-    Header::EncryptionType mEncryptionType = Header::EncryptionType::kAESCCMTagLen16;
+    Header::EncryptionType mEncryptionType = Header::EncryptionType::kEncryptionType_AEAD;
 };
 
 /**
