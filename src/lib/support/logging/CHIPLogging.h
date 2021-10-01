@@ -178,6 +178,13 @@ void SetLogFilter(uint8_t category);
 #endif
 
 #if CHIP_DETAIL_LOGGING
+#ifndef ChipLogDumpDetail
+#define ChipLogDumpDetail(MOD, MSG, BUF, LEN)                                                                                      \
+    chip::Logging::Dump(chip::Logging::kLogModule_##MOD, chip::Logging::kLogCategory_Detail, MSG, BUF, LEN)
+#endif
+#else
+#define ChipLogDumpDetail(MOD, MSG, BUF, LEN) ((void) 0)
+
 #ifndef ChipLogByteSpan
 #define ChipLogByteSpan(MOD, DATA)                                                                                                 \
     chip::Logging::LogByteSpan(chip::Logging::kLogModule_##MOD, chip::Logging::kLogCategory_Detail, DATA)
