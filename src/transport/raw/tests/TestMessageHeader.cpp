@@ -41,7 +41,7 @@ void TestPacketHeaderInitialState(nlTestSuite * inSuite, void * inContext)
     NL_TEST_ASSERT(inSuite, !header.IsSecureSessionControlMsg());
     NL_TEST_ASSERT(inSuite, header.GetMessageCounter() == 0);
     NL_TEST_ASSERT(inSuite, header.GetSessionId() == 0);
-    NL_TEST_ASSERT(inSuite, !header.HasSessionId());
+    NL_TEST_ASSERT(inSuite, !header.IsEncrypted());
     NL_TEST_ASSERT(inSuite, !header.GetDestinationNodeId().HasValue());
     NL_TEST_ASSERT(inSuite, !header.GetDestinationGroupId().HasValue());
     NL_TEST_ASSERT(inSuite, !header.GetSourceNodeId().HasValue());
@@ -128,7 +128,7 @@ void TestPacketHeaderEncodeDecode(nlTestSuite * inSuite, void * inContext)
     NL_TEST_ASSERT(inSuite, header.GetMessageCounter() == 234);
     NL_TEST_ASSERT(inSuite, header.GetDestinationNodeId() == Optional<uint64_t>::Value(88ull));
     NL_TEST_ASSERT(inSuite, header.GetSourceNodeId() == Optional<uint64_t>::Value(77ull));
-    NL_TEST_ASSERT(inSuite, header.HasSessionId());
+    NL_TEST_ASSERT(inSuite, header.IsEncrypted());
     NL_TEST_ASSERT(inSuite, header.GetSessionId() == 2);
 
     header.SetMessageCounter(234).SetSourceNodeId(77).SetDestinationNodeId(88);
@@ -283,6 +283,93 @@ void TestPayloadHeaderEncodeDecodeBounds(nlTestSuite * inSuite, void * inContext
     }
 }
 
+struct SpecComplianceTestVector {
+    uint8_t encoded[8];
+    uint8_t messageFlags;
+    uint16_t sessionId;
+    uint8_t sessionType;
+    uint8_t securityFlags;
+    uint32_t messageCounter;
+
+    bool isSecure;
+};
+
+struct SpecComplianceTestVector theSpecComplianceTestVector[] = {
+    {
+        .encoded = { 0x00,0x88,0x77,0x01,0x44,0x33,0x22,0x11 },
+        .messageFlags = 0x00,
+        .sessionId = 0x7788,
+        .sessionType = 0x01,
+        .securityFlags = 0x01,
+        .messageCounter = 0x11223344,
+        .isSecure = true,
+    },
+    {
+        .encoded = { 0x00,0xEE,0xDD,0xCC,0x40,0x30,0x20,0x10 },
+        .messageFlags = 0x00,
+        .sessionId = 0xDDEE,
+        .sessionType = 0x00,
+        .securityFlags = 0xCC,
+        .messageCounter = 0x10203040,
+        .isSecure = true,
+    },
+    {
+        .encoded = { 0x00,0x00,0x00,0xCC,0x40,0x30,0x20,0x10 },
+        .messageFlags = 0x00,
+        .sessionId = 0x0000,
+        .sessionType = 0x00,
+        .securityFlags = 0x00,
+        .messageCounter = 0x10203040,
+        .isSecure = false,
+    },
+};
+
+const unsigned theSpecComplianceTestVectorLength = sizeof(theSpecComplianceTestVector) / sizeof(struct SpecComplianceTestVector);
+
+#define MSG_HEADER_SIZE 8
+
+void TestSpecComplianceEncode(nlTestSuite * inSuite, void * inContext)
+{
+    struct SpecComplianceTestVector *testEntry;
+    PacketHeader packetHeader;
+    uint8_t buffer[MSG_HEADER_SIZE];
+    uint16_t encodeSize;
+
+    for (unsigned i = 0; i < theSpecComplianceTestVectorLength; i++)
+    {
+        testEntry = &theSpecComplianceTestVector[i];
+
+        packetHeader.SetMessageFlags(testEntry->messageFlags);
+        packetHeader.SetSecurityFlags(testEntry->securityFlags);
+        packetHeader.SetSessionId(testEntry->sessionId);
+        packetHeader.SetMessageCounter(testEntry->messageCounter);
+
+        NL_TEST_ASSERT(inSuite, packetHeader.Encode(buffer, sizeof(buffer), &encodeSize) == CHIP_NO_ERROR);
+        NL_TEST_ASSERT(inSuite, encodeSize == MSG_HEADER_SIZE);
+        NL_TEST_ASSERT(inSuite, memcmp(buffer, testEntry->encoded, MSG_HEADER_SIZE) == 0);
+    }
+}
+
+void TestSpecComplianceDecode(nlTestSuite * inSuite, void * inContext)
+{
+    struct SpecComplianceTestVector *testEntry;
+    PacketHeader packetHeader;
+    uint16_t decodeSize;
+
+    for (unsigned i = 0; i < theSpecComplianceTestVectorLength; i++)
+    {
+        testEntry = &theSpecComplianceTestVector[i];
+
+        NL_TEST_ASSERT(inSuite, packetHeader.Decode(testEntry->encoded, MSG_HEADER_SIZE, &decodeSize) == CHIP_NO_ERROR);
+        NL_TEST_ASSERT(inSuite, decodeSize == MSG_HEADER_SIZE);
+        NL_TEST_ASSERT(inSuite, packetHeader.GetMessageFlags() == testEntry->messageFlags);
+        NL_TEST_ASSERT(inSuite, packetHeader.GetSecurityFlags() == testEntry->securityFlags);
+        NL_TEST_ASSERT(inSuite, packetHeader.GetSessionId() == testEntry->sessionId);
+        NL_TEST_ASSERT(inSuite, packetHeader.GetMessageCounter() == testEntry->messageCounter);
+        NL_TEST_ASSERT(inSuite, packetHeader.IsEncrypted() == testEntry->isSecure);
+    }
+}
+
 } // namespace
 
 // clang-format off
@@ -294,6 +381,8 @@ static const nlTest sTests[] =
     NL_TEST_DEF("PayloadEncodeDecode", TestPayloadHeaderEncodeDecode),
     NL_TEST_DEF("PacketEncodeDecodeBounds", TestPacketHeaderEncodeDecodeBounds),
     NL_TEST_DEF("PayloadEncodeDecodeBounds", TestPayloadHeaderEncodeDecodeBounds),
+    NL_TEST_DEF("SpecComplianceEncode", TestSpecComplianceEncode),
+    NL_TEST_DEF("SpecComplianceDecode", TestSpecComplianceDecode),
     NL_TEST_SENTINEL()
 };
 // clang-format on

@@ -151,8 +151,6 @@ public:
 
     uint16_t GetSessionId() const { return mSessionId; }
 
-    bool HasSessionId() const { return mSessionId != kMsgSessionIdUnsecured; }
-
     bool IsEncrypted() const { return mSessionId != kMsgSessionIdUnsecured; }
 
     uint16_t MICTagLength() const { return (IsEncrypted()) ? chip::Crypto::CHIP_CRYPTO_AEAD_MIC_LENGTH_BYTES : 0; }
@@ -228,6 +226,14 @@ public:
         mMsgFlags.Clear(Header::MsgFlagValues::kDestinationGroupIdPresent);
         return *this;
     }
+
+    uint8_t GetMessageFlags() { return mMsgFlags.Raw(); }
+
+    uint8_t GetSecurityFlags() { return mSecFlags.Raw(); }
+
+    void SetMessageFlags(uint8_t flags) { mMsgFlags.SetRaw(flags); }
+
+    void SetSecurityFlags(uint8_t flags) { mSecFlags.SetRaw(flags); }
 
     PacketHeader & SetSessionType(Header::SessionType type)
     {
