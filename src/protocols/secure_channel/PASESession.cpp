@@ -599,6 +599,11 @@ CHIP_ERROR PASESession::SendMsg1()
 
     ReturnErrorOnFailure(
         mSpake2p.BeginProver(nullptr, 0, nullptr, 0, mPASEVerifier.mW0, kSpake2p_WS_Length, mPASEVerifier.mL, kSpake2p_WS_Length));
+
+    ChipLogDumpDetail(SecureChannel, "w0", mPASEVerifier.mW0, kSpake2p_WS_Length);
+    ChipLogDumpDetail(SecureChannel, "L", mPASEVerifier.mL, kSpake2p_WS_Length);
+    ChipLogDumpDetail(SecureChannel, "L = mPoint", mPoint, sizeof(mPoint));
+
     ReturnErrorOnFailure(mSpake2p.ComputeRoundOne(NULL, 0, X, &X_len));
     VerifyOrReturnError(X_len == sizeof(X), CHIP_ERROR_INTERNAL);
     ReturnErrorOnFailure(tlvWriter.Put(TLV::ContextTag(kPake1_pA), ByteSpan(X)));
@@ -642,6 +647,10 @@ CHIP_ERROR PASESession::HandleMsg1_and_SendMsg2(System::PacketBufferHandle && ms
     SuccessOrExit(err = tlvReader.GetDataPtr(X));
     SuccessOrExit(
         err = mSpake2p.BeginVerifier(nullptr, 0, nullptr, 0, mPASEVerifier.mW0, kSpake2p_WS_Length, mPoint, sizeof(mPoint)));
+
+    ChipLogDumpDetail(SecureChannel, "w0", mPASEVerifier.mW0, kSpake2p_WS_Length);
+    ChipLogDumpDetail(SecureChannel, "L", mPASEVerifier.mL, kSpake2p_WS_Length);
+    ChipLogDumpDetail(SecureChannel, "L = mPoint", mPoint, sizeof(mPoint));
 
     SuccessOrExit(err = mSpake2p.ComputeRoundOne(X, X_len, Y, &Y_len));
     VerifyOrReturnError(Y_len == sizeof(Y), CHIP_ERROR_INTERNAL);

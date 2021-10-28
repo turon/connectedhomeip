@@ -334,6 +334,15 @@ CHIP_ERROR Spake2p::ComputeRoundOne(const uint8_t * pab, size_t pab_len, uint8_t
     SuccessOrExit(error = PointAddMul(XY, G, xy, MN, w0));
     SuccessOrExit(error = PointWrite(XY, out, *out_len));
 
+    if (role == CHIP_SPAKE2P_ROLE::PROVER)
+    {
+        ChipLogDumpDetail(SecureChannel, "pA = X", out, unsigned(point_size));
+    }
+    else if (role == CHIP_SPAKE2P_ROLE::VERIFIER)
+    {
+        ChipLogDumpDetail(SecureChannel, "pB = Y", out, unsigned(point_size));
+    }
+
     state = CHIP_SPAKE2P_STATE::R1;
     error = CHIP_NO_ERROR;
 exit:
@@ -406,6 +415,24 @@ CHIP_ERROR Spake2p::ComputeRoundTwo(const uint8_t * in, size_t in_len, uint8_t *
     SuccessOrExit(error = GenerateKeys());
 
     SuccessOrExit(error = Mac(Kcaorb, hash_size / 2, in, in_len, out));
+
+    ChipLogDumpDetail(SecureChannel, "L", L, unsigned(point_size));
+    ChipLogDumpDetail(SecureChannel, "Z", Z, unsigned(point_size));
+    ChipLogDumpDetail(SecureChannel, "V", V, unsigned(point_size));
+    ChipLogDumpDetail(SecureChannel, "w0", w0, unsigned(fe_size));
+
+    if (role == CHIP_SPAKE2P_ROLE::PROVER)
+    {
+        ChipLogDumpDetail(SecureChannel, "pB = Y", XY, unsigned(point_size));
+        ChipLogDumpDetail(SecureChannel, "Kca", Kcaorb, unsigned(hash_size/2));
+        ChipLogDumpDetail(SecureChannel, "cA", out, unsigned(*out_len));
+    }
+    else if (role == CHIP_SPAKE2P_ROLE::VERIFIER)
+    {
+        ChipLogDumpDetail(SecureChannel, "pA = X", XY, unsigned(point_size));
+        ChipLogDumpDetail(SecureChannel, "Kcb", Kcaorb, unsigned(hash_size/2));
+        ChipLogDumpDetail(SecureChannel, "cB", out, unsigned(*out_len));
+    }
 
     state = CHIP_SPAKE2P_STATE::R2;
     error = CHIP_NO_ERROR;
