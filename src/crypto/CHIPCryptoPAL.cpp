@@ -265,6 +265,8 @@ CHIP_ERROR Spake2p::Init(const uint8_t * context, size_t context_len)
     ReturnErrorOnFailure(PointLoad(spake2p_N_p256, sizeof(spake2p_N_p256), N));
     ReturnErrorOnFailure(InternalHash(context, context_len));
 
+    ChipLogDumpDetail(SecureChannel, "TT CONTEXT", context, unsigned(context_len));
+
     state = CHIP_SPAKE2P_STATE::INIT;
     return CHIP_NO_ERROR;
 }
@@ -273,6 +275,9 @@ CHIP_ERROR Spake2p::WriteMN()
 {
     ReturnErrorOnFailure(InternalHash(spake2p_M_p256, sizeof(spake2p_M_p256)));
     ReturnErrorOnFailure(InternalHash(spake2p_N_p256, sizeof(spake2p_N_p256)));
+
+    ChipLogDumpDetail(SecureChannel, "TT M", spake2p_M_p256, unsigned(sizeof(spake2p_M_p256)));
+    ChipLogDumpDetail(SecureChannel, "TT N", spake2p_N_p256, unsigned(sizeof(spake2p_N_p256)));
 
     return CHIP_NO_ERROR;
 }
@@ -283,11 +288,17 @@ CHIP_ERROR Spake2p::BeginVerifier(const uint8_t * my_identity, size_t my_identit
 {
     VerifyOrReturnError(state == CHIP_SPAKE2P_STATE::INIT, CHIP_ERROR_INTERNAL);
 
+    ChipLogDumpDetail(SecureChannel, "TT A", peer_identity, unsigned(peer_identity_len));
+    ChipLogDumpDetail(SecureChannel, "TT B", my_identity, unsigned(my_identity_len));
+
     ReturnErrorOnFailure(InternalHash(peer_identity, peer_identity_len));
     ReturnErrorOnFailure(InternalHash(my_identity, my_identity_len));
     ReturnErrorOnFailure(WriteMN());
     ReturnErrorOnFailure(FELoad(w0in, w0in_len, w0));
     ReturnErrorOnFailure(PointLoad(Lin, Lin_len, L));
+
+    ChipLogDumpDetail(SecureChannel, "w0 != w0s (bug)", w0in, unsigned(w0in_len));
+    ChipLogDumpDetail(SecureChannel, "L", Lin, unsigned(Lin_len));
 
     state = CHIP_SPAKE2P_STATE::STARTED;
     role  = CHIP_SPAKE2P_ROLE::VERIFIER;
@@ -300,11 +311,17 @@ CHIP_ERROR Spake2p::BeginProver(const uint8_t * my_identity, size_t my_identity_
 {
     VerifyOrReturnError(state == CHIP_SPAKE2P_STATE::INIT, CHIP_ERROR_INTERNAL);
 
+    ChipLogDumpDetail(SecureChannel, "TT A", my_identity, unsigned(my_identity_len));
+    ChipLogDumpDetail(SecureChannel, "TT B", peer_identity, unsigned(peer_identity_len));
+
     ReturnErrorOnFailure(InternalHash(my_identity, my_identity_len));
     ReturnErrorOnFailure(InternalHash(peer_identity, peer_identity_len));
     ReturnErrorOnFailure(WriteMN());
     ReturnErrorOnFailure(FELoad(w0in, w0in_len, w0));
     ReturnErrorOnFailure(FELoad(w1in, w1in_len, w1));
+
+    ChipLogDumpDetail(SecureChannel, "w0s", w0in, unsigned(w0in_len));
+    ChipLogDumpDetail(SecureChannel, "w1s", w0in, unsigned(w0in_len));
 
     state = CHIP_SPAKE2P_STATE::STARTED;
     role  = CHIP_SPAKE2P_ROLE::PROVER;
@@ -338,6 +355,19 @@ CHIP_ERROR Spake2p::ComputeRoundOne(const uint8_t * pab, size_t pab_len, uint8_t
     SuccessOrExit(error = PointAddMul(XY, G, xy, MN, w0));
     SuccessOrExit(error = PointWrite(XY, out, *out_len));
 
+    //uint8_t point_buffer[kMAX_Point_Length];
+    //SuccessOrExit(error = PointWrite(w0, point_buffer, point_size));
+    //ChipLogDumpDetail(SecureChannel, "w0", point_buffer, unsigned(point_size));
+
+    if (role == CHIP_SPAKE2P_ROLE::PROVER)
+    {
+        ChipLogDumpDetail(SecureChannel, "pA = X", out, unsigned(point_size));
+    }
+    else if (role == CHIP_SPAKE2P_ROLE::VERIFIER)
+    {
+        ChipLogDumpDetail(SecureChannel, "pB = Y", out, unsigned(point_size));
+    }
+
     state = CHIP_SPAKE2P_STATE::R1;
     error = CHIP_NO_ERROR;
 exit:
@@ -360,9 +390,14 @@ CHIP_ERROR Spake2p::ComputeRoundTwo(const uint8_t * in, size_t in_len, uint8_t *
 
     if (role == CHIP_SPAKE2P_ROLE::PROVER)
     {
+        ChipLogDumpDetail(SecureChannel, "pB = Y", in, unsigned(point_size));
         SuccessOrExit(error = PointWrite(X, point_buffer, point_size));
+        ChipLogDumpDetail(SecureChannel, "pA = X", point_buffer, unsigned(point_size));
         SuccessOrExit(error = InternalHash(point_buffer, point_size));
         SuccessOrExit(error = InternalHash(in, in_len));
+
+        ChipLogDumpDetail(SecureChannel, "TT X", point_buffer, unsigned(point_size));
+        ChipLogDumpDetail(SecureChannel, "TT Y", in, unsigned(in_len));
 
         MN     = N;
         XY     = Y;
@@ -370,9 +405,14 @@ CHIP_ERROR Spake2p::ComputeRoundTwo(const uint8_t * in, size_t in_len, uint8_t *
     }
     else if (role == CHIP_SPAKE2P_ROLE::VERIFIER)
     {
+        ChipLogDumpDetail(SecureChannel, "pA = X", in, unsigned(point_size));
         SuccessOrExit(error = InternalHash(in, in_len));
         SuccessOrExit(error = PointWrite(Y, point_buffer, point_size));
+        ChipLogDumpDetail(SecureChannel, "pB = Y", point_buffer, unsigned(point_size));
         SuccessOrExit(error = InternalHash(point_buffer, point_size));
+
+        ChipLogDumpDetail(SecureChannel, "TT X", in, unsigned(in_len));
+        ChipLogDumpDetail(SecureChannel, "TT Y", point_buffer, unsigned(point_size));
 
         MN     = M;
         XY     = X;
@@ -401,17 +441,34 @@ CHIP_ERROR Spake2p::ComputeRoundTwo(const uint8_t * in, size_t in_len, uint8_t *
     SuccessOrExit(error = PointCofactorMul(V));
     SuccessOrExit(error = PointWrite(Z, point_buffer, point_size));
     SuccessOrExit(error = InternalHash(point_buffer, point_size));
+    ChipLogDumpDetail(SecureChannel, "TT Z", point_buffer, unsigned(point_size));
 
     SuccessOrExit(error = PointWrite(V, point_buffer, point_size));
     SuccessOrExit(error = InternalHash(point_buffer, point_size));
+    ChipLogDumpDetail(SecureChannel, "TT V", point_buffer, unsigned(point_size));
 
     SuccessOrExit(error = FEWrite(w0, point_buffer, fe_size));
     SuccessOrExit(error = InternalHash(point_buffer, fe_size));
+    ChipLogDumpDetail(SecureChannel, "TT w0", point_buffer, unsigned(fe_size));
 
     SuccessOrExit(error = GenerateKeys());
 
     SuccessOrExit(error = Mac(Kcaorb, hash_size / 2, in, in_len, out_span));
     VerifyOrExit(out_span.size() == hash_size, error = CHIP_ERROR_INTERNAL);
+
+    ChipLogDumpDetail(SecureChannel, "Ka", Ka, unsigned(hash_size/2));
+    ChipLogDumpDetail(SecureChannel, "Ke", Ke, unsigned(hash_size/2));
+
+    if (role == CHIP_SPAKE2P_ROLE::PROVER)
+    {
+        ChipLogDumpDetail(SecureChannel, "Kca", Kcaorb, unsigned(hash_size/2));
+        ChipLogDumpDetail(SecureChannel, "cA", out, unsigned(*out_len));
+    }
+    else if (role == CHIP_SPAKE2P_ROLE::VERIFIER)
+    {
+        ChipLogDumpDetail(SecureChannel, "Kcb", Kcaorb, unsigned(hash_size/2));
+        ChipLogDumpDetail(SecureChannel, "cB", out, unsigned(*out_len));
+    }
 
     state = CHIP_SPAKE2P_STATE::R2;
     error = CHIP_NO_ERROR;
@@ -473,7 +530,12 @@ CHIP_ERROR Spake2p::GetKeys(uint8_t * out, size_t * out_len)
     VerifyOrExit(state == CHIP_SPAKE2P_STATE::KC, error = CHIP_ERROR_INTERNAL);
     VerifyOrExit(*out_len >= hash_size / 2, error = CHIP_ERROR_INVALID_ARGUMENT);
 
+    ChipLogDumpDetail(SecureChannel, "Ke", Ke, unsigned(hash_size/2));
+
     memcpy(out, Ke, hash_size / 2);
+
+    ChipLogDumpDetail(SecureChannel, "Ke out", out, unsigned(hash_size/2));
+
     error = CHIP_NO_ERROR;
 exit:
     *out_len = hash_size / 2;
