@@ -600,9 +600,11 @@ CHIP_ERROR PASESession::SendMsg1()
     ReturnErrorOnFailure(
         mSpake2p.BeginProver(nullptr, 0, nullptr, 0, mPASEVerifier.mW0, kSpake2p_WS_Length, mPASEVerifier.mL, kSpake2p_WS_Length));
 
-    ChipLogDumpDetail(SecureChannel, "w0", mPASEVerifier.mW0, kSpake2p_WS_Length);
-    ChipLogDumpDetail(SecureChannel, "L", mPASEVerifier.mL, kSpake2p_WS_Length);
-    ChipLogDumpDetail(SecureChannel, "L = mPoint", mPoint, sizeof(mPoint));
+    uint8_t point_buffer[kMAX_Point_Length];
+    ReturnErrorOnFailure(mSpake2p.FEWrite(mSpake2p.w0, point_buffer, sizeof(mPoint)/2));
+    ChipLogDumpDetail(SecureChannel, "w0 = mSpake2", point_buffer, sizeof(mPoint)/2);
+    ReturnErrorOnFailure(mSpake2p.FEWrite(mSpake2p.w1, point_buffer, sizeof(mPoint)/2));
+    ChipLogDumpDetail(SecureChannel, "w1 = mSpake2", point_buffer, sizeof(mPoint)/2);
 
     ReturnErrorOnFailure(mSpake2p.ComputeRoundOne(NULL, 0, X, &X_len));
     VerifyOrReturnError(X_len == sizeof(X), CHIP_ERROR_INTERNAL);
