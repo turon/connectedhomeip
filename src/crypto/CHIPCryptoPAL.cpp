@@ -285,6 +285,9 @@ CHIP_ERROR Spake2p::BeginVerifier(const uint8_t * my_identity, size_t my_identit
     ReturnErrorOnFailure(FELoad(w0in, w0in_len, w0));
     ReturnErrorOnFailure(PointLoad(Lin, Lin_len, L));
 
+    ChipLogDumpDetail(SecureChannel, "w0 != w0s (bug)", w0in, unsigned(w0in_len));
+    ChipLogDumpDetail(SecureChannel, "L", Lin, unsigned(Lin_len));
+
     state = CHIP_SPAKE2P_STATE::STARTED;
     role  = CHIP_SPAKE2P_ROLE::VERIFIER;
     return CHIP_NO_ERROR;
@@ -301,6 +304,9 @@ CHIP_ERROR Spake2p::BeginProver(const uint8_t * my_identity, size_t my_identity_
     ReturnErrorOnFailure(WriteMN());
     ReturnErrorOnFailure(FELoad(w0in, w0in_len, w0));
     ReturnErrorOnFailure(FELoad(w1in, w1in_len, w1));
+
+    ChipLogDumpDetail(SecureChannel, "w0s", w0in, unsigned(w0in_len));
+    ChipLogDumpDetail(SecureChannel, "w1s", w0in, unsigned(w0in_len));
 
     state = CHIP_SPAKE2P_STATE::STARTED;
     role  = CHIP_SPAKE2P_ROLE::PROVER;
@@ -333,6 +339,10 @@ CHIP_ERROR Spake2p::ComputeRoundOne(const uint8_t * pab, size_t pab_len, uint8_t
 
     SuccessOrExit(error = PointAddMul(XY, G, xy, MN, w0));
     SuccessOrExit(error = PointWrite(XY, out, *out_len));
+
+    //uint8_t point_buffer[kMAX_Point_Length];
+    //SuccessOrExit(error = PointWrite(w0, point_buffer, point_size));
+    //ChipLogDumpDetail(SecureChannel, "w0", point_buffer, unsigned(point_size));
 
     if (role == CHIP_SPAKE2P_ROLE::PROVER)
     {

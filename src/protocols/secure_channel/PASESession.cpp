@@ -650,8 +650,8 @@ CHIP_ERROR PASESession::HandleMsg1_and_SendMsg2(System::PacketBufferHandle && ms
     SuccessOrExit(
         err = mSpake2p.BeginVerifier(nullptr, 0, nullptr, 0, mPASEVerifier.mW0, kSpake2p_WS_Length, mPoint, sizeof(mPoint)));
 
-    ChipLogDumpDetail(SecureChannel, "w0", mPASEVerifier.mW0, kSpake2p_WS_Length);
-    ChipLogDumpDetail(SecureChannel, "L", mPASEVerifier.mL, kSpake2p_WS_Length);
+    ChipLogDumpDetail(SecureChannel, "w0s", mPASEVerifier.mW0, kSpake2p_WS_Length);
+    ChipLogDumpDetail(SecureChannel, "w1s", mPASEVerifier.mL, kSpake2p_WS_Length);
     ChipLogDumpDetail(SecureChannel, "L = mPoint", mPoint, sizeof(mPoint));
 
     SuccessOrExit(err = mSpake2p.ComputeRoundOne(X, X_len, Y, &Y_len));
