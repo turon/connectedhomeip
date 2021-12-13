@@ -138,6 +138,7 @@ static void CmdAppServerAtExit()
     CmdAppServerStop(0, nullptr);
 }
 
+
 void cmd_app_server_init()
 {
     static const shell_command_t sServerComand = { &CmdAppServer, "server",
