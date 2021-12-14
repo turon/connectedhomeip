@@ -65,6 +65,7 @@ target_include_directories(chip-config INTERFACE
     ${PROJECT_SOURCE_DIR}/third_party/nlio/repo/include
     ${PROJECT_SOURCE_DIR}/src/lwip/standalone
     ${OPENSSL_INCLUDE_DIRS}
+    ${PROJECT_BINARY_DIR}/gen/include
 )
 
 set(CHIP_TARGET_STYLE_UNIX 1)
@@ -87,3 +88,8 @@ set(CHIP_PLATFORM_LIBS
 add_library(PlatformBsp INTERFACE)
 add_library(PlatformOs INTERFACE)
 add_library(lwipTarget INTERFACE)
+
+configure_file (
+    ${PROJECT_SOURCE_DIR}/build/cmake/platforms/CHIPDeviceBuildConfig.h.in
+    ${PROJECT_BINARY_DIR}/gen/include/platform/CHIPDeviceBuildConfig.h
+)

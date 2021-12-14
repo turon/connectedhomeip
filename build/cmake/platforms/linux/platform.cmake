@@ -99,3 +99,8 @@ set(CHIP_PLATFORM_LIBS
 add_library(PlatformBsp INTERFACE)
 add_library(PlatformOs INTERFACE)
 add_library(lwipTarget INTERFACE)
+
+configure_file (
+    "${CMAKE_CURRENT_SOURCE_DIR}/CHIPDeviceBuildConfig.h.in"
+    "${PROJECT_BINARY_DIR}/gen/include/platform/CHIPDeviceBuildConfig.h"
+)
