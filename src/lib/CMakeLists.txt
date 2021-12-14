@@ -17,22 +17,9 @@
 
 #
 #    Description:
-#      This file is the CMake template for the CHIP SDK source code.
+#      This file is the CMake template for CHIP SDK libraries.
 #
 
-add_subdirectory(app)
-add_subdirectory(ble)
-add_subdirectory(crypto)
-add_subdirectory(inet)
-add_subdirectory(lib)
-add_subdirectory(lwip)
-add_subdirectory(system)
-add_subdirectory(transport)
-
-if(CONFIG_DEVICE_LAYER)
-add_subdirectory(platform)
-endif()
-
-if(CHIP_TARGET_STYLE_UNIX)
-add_subdirectory(setup_payload)
-endif()
+add_subdirectory(core)
+add_subdirectory(shell)
+add_subdirectory(support)

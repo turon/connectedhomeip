@@ -17,22 +17,16 @@
 
 #
 #    Description:
-#      This file is the CMake template for the CHIP SDK source code.
+#      CMake configuration for the Espressif ESP32 platform.
+# 
+
+#
+# Define chip-config interface library to provide defines and include paths for platform
 #
 
-add_subdirectory(app)
-add_subdirectory(ble)
-add_subdirectory(crypto)
-add_subdirectory(inet)
-add_subdirectory(lib)
-add_subdirectory(lwip)
-add_subdirectory(system)
-add_subdirectory(transport)
+add_library(chip-config INTERFACE)
 
-if(CONFIG_DEVICE_LAYER)
-add_subdirectory(platform)
-endif()
-
-if(CHIP_TARGET_STYLE_UNIX)
-add_subdirectory(setup_payload)
-endif()
+target_compile_definitions(chip-config INTERFACE
+    "CHIP_SYSTEM_CONFIG_USE_SOCKETS=0"
+    "CHIP_SYSTEM_CONFIG_USE_LWIP=1"
+)

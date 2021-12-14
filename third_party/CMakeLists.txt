@@ -17,22 +17,12 @@
 
 #
 #    Description:
-#      This file is the CMake template for the CHIP SDK source code.
+#      This file is the CMake template for the CHIP SDK third_party code.
 #
 
-add_subdirectory(app)
-add_subdirectory(ble)
-add_subdirectory(crypto)
-add_subdirectory(inet)
-add_subdirectory(lib)
 add_subdirectory(lwip)
-add_subdirectory(system)
-add_subdirectory(transport)
-
-if(CONFIG_DEVICE_LAYER)
-add_subdirectory(platform)
-endif()
-
-if(CHIP_TARGET_STYLE_UNIX)
-add_subdirectory(setup_payload)
-endif()
+add_subdirectory(mbedtls)
+add_subdirectory(nlassert)
+add_subdirectory(nlio)
+add_subdirectory(nlfaultinjection)
+add_subdirectory(nlunit-test)

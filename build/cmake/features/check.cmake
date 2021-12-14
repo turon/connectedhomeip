@@ -17,22 +17,14 @@
 
 #
 #    Description:
-#      This file is the CMake template for the CHIP SDK source code.
+#      This file is the CMake template for defining the `check` target for building and running tests.
 #
 
-add_subdirectory(app)
-add_subdirectory(ble)
-add_subdirectory(crypto)
-add_subdirectory(inet)
-add_subdirectory(lib)
-add_subdirectory(lwip)
-add_subdirectory(system)
-add_subdirectory(transport)
-
-if(CONFIG_DEVICE_LAYER)
-add_subdirectory(platform)
-endif()
-
-if(CHIP_TARGET_STYLE_UNIX)
-add_subdirectory(setup_payload)
-endif()
+#
+# Enable cmake test framework: 
+#   Adds 'check' target to build and run tests.
+#   Enables default 'test' target that runs pre-built tests.
+#
+include(CTest)
+enable_testing()
+add_custom_target(check ${CMAKE_CTEST_COMMAND} -V)
