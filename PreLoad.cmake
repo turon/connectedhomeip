@@ -1,0 +1,5 @@
+if(DEFINED ENV{CMAKE_GENERATOR})
+else()
+    set(CMAKE_GENERATOR "Ninja" CACHE INTERNAL "" FORCE)
+endif()
+message("Generator is set to '${CMAKE_GENERATOR}'. Override via CMAKE_GENERATOR environment variable.")
