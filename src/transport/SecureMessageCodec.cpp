@@ -37,7 +37,13 @@ using System::PacketBufferHandle;
 namespace SecureMessageCodec {
 
 CHIP_ERROR Encrypt(const CryptoContext & context, PayloadHeader & payloadHeader, PacketHeader & packetHeader,
-                   System::PacketBufferHandle & msgBuf)
+                   System::PacketBufferHandle & msg)
+{
+    return Encrypt(context, payloadHeader, packetHeader, msg, kUndefinedNodeId);
+}
+
+CHIP_ERROR Encrypt(const CryptoContext & context, PayloadHeader & payloadHeader, PacketHeader & packetHeader,
+                   System::PacketBufferHandle & msgBuf, NodeId sourceNodeId)
 {
     VerifyOrReturnError(!msgBuf.IsNull(), CHIP_ERROR_INVALID_ARGUMENT);
     VerifyOrReturnError(!msgBuf->HasChainedBuffer(), CHIP_ERROR_INVALID_MESSAGE_LENGTH);
@@ -51,6 +57,7 @@ CHIP_ERROR Encrypt(const CryptoContext & context, PayloadHeader & payloadHeader,
     uint8_t * data    = msgBuf->Start();
     uint16_t totalLen = msgBuf->TotalLength();
 
+    // TODO(#nonce): const CryptoContext & context = session.GetCryptoContext();
     MessageAuthenticationCode mac;
     ReturnErrorOnFailure(context.Encrypt(data, totalLen, data, packetHeader, mac));
 
@@ -63,8 +70,15 @@ CHIP_ERROR Encrypt(const CryptoContext & context, PayloadHeader & payloadHeader,
     return CHIP_NO_ERROR;
 }
 
+
 CHIP_ERROR Decrypt(const CryptoContext & context, PayloadHeader & payloadHeader, const PacketHeader & packetHeader,
                    System::PacketBufferHandle & msg)
+{
+    return Decrypt(context, payloadHeader, packetHeader, msg, kUndefinedNodeId);
+}
+
+CHIP_ERROR Decrypt(const CryptoContext & context, PayloadHeader & payloadHeader, const PacketHeader & packetHeader,
+                   System::PacketBufferHandle & msg, NodeId sourceNodeId)
 {
     ReturnErrorCodeIf(msg.IsNull(), CHIP_ERROR_INVALID_ARGUMENT);
 
@@ -93,6 +107,7 @@ CHIP_ERROR Decrypt(const CryptoContext & context, PayloadHeader & payloadHeader,
     msg->SetDataLength(len);
 
     uint8_t * plainText = msg->Start();
+    // TODO(#nonce): const CryptoContext & context = session.GetCryptoContext();
     ReturnErrorOnFailure(context.Decrypt(data, len, plainText, packetHeader, mac));
 
     ReturnErrorOnFailure(payloadHeader.DecodeAndConsume(msg));

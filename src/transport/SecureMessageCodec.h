@@ -54,6 +54,26 @@ CHIP_ERROR Encrypt(const CryptoContext & context, PayloadHeader & payloadHeader,
 
 /**
  * @brief
+ *  Attach payload header to the message and encrypt the message buffer using
+ *  key from the secure session and the given sourceNodeId.
+ *
+ * @param session       The secure session context with the peer node
+ * @param payloadHeader Reference to the payload header that should be inserted in
+ *                      the message
+ * @param packetHeader  Reference to the packet header that contains unencrypted
+ *                      portion of the message header
+ * @param msgBuf        The message buffer that contains the unencrypted message. If
+ *                      the operation is successful, this buffer will be mutated to contain
+ *                      the encrypted message.
+ * @param sourceNodeId  The source node id to use for nonce calculation when omitted from the message header, 
+ *                      for instance when sending over a secure unicast session.
+ * @return A CHIP_ERROR value consistent with the result of the encryption operation
+ */
+CHIP_ERROR Encrypt(const CryptoContext & context, PayloadHeader & payloadHeader, PacketHeader & packetHeader,
+                   System::PacketBufferHandle & msgBuf, NodeId sourceNodeId);
+
+/**
+ * @brief
  *  Decrypt the message, perform message integrity check, and decode the payload header,
  *  consuming the header from the packet in doing so.
  *
@@ -68,6 +88,25 @@ CHIP_ERROR Encrypt(const CryptoContext & context, PayloadHeader & payloadHeader,
  */
 CHIP_ERROR Decrypt(const CryptoContext & context, PayloadHeader & payloadHeader, const PacketHeader & packetHeader,
                    System::PacketBufferHandle & msgBuf);
+
+/**
+ * @brief
+ *  Decrypt the message, perform message integrity check, and decode the payload header,
+ *  consuming the header from the packet and the given sourceNodeId in doing so.
+ *
+ * @param session       The secure session context with the peer node
+ * @param payloadHeader Reference to the payload header that will be recovered from the message
+ * @param packetHeader  Reference to the packet header that contains unencrypted
+ *                      portion of the message header
+ * @param msgBuf        The message buffer that contains the encrypted message. If
+ *                      the operation is successful, this buffer will be mutated to contain
+ *                      the decrypted message.
+ * @param sourceNodeId  The source node id to use for nonce calculation when omitted from the message header, 
+ *                      for instance when sending over a secure unicast session.
+ * @return A CHIP_ERROR value consistent with the result of the decryption operation
+ */
+CHIP_ERROR Decrypt(const CryptoContext & context, PayloadHeader & payloadHeader, const PacketHeader & packetHeader,
+                   System::PacketBufferHandle & msgBuf, NodeId sourceNodeId);
 
 } // namespace SecureMessageCodec
 
