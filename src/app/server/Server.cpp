@@ -90,15 +90,16 @@ Server Server::sServer;
 
 #if CHIP_CONFIG_ENABLE_SERVER_IM_EVENT
 #define CHIP_NUM_EVENT_LOGGING_BUFFERS 3
-static uint8_t sInfoEventBuffer[CHIP_DEVICE_CONFIG_EVENT_LOGGING_INFO_BUFFER_SIZE];
-static uint8_t sDebugEventBuffer[CHIP_DEVICE_CONFIG_EVENT_LOGGING_DEBUG_BUFFER_SIZE];
-static uint8_t sCritEventBuffer[CHIP_DEVICE_CONFIG_EVENT_LOGGING_CRIT_BUFFER_SIZE];
+// static uint8_t sInfoEventBuffer[CHIP_DEVICE_CONFIG_EVENT_LOGGING_INFO_BUFFER_SIZE];
+// static uint8_t sDebugEventBuffer[CHIP_DEVICE_CONFIG_EVENT_LOGGING_DEBUG_BUFFER_SIZE];
+// static uint8_t sCritEventBuffer[CHIP_DEVICE_CONFIG_EVENT_LOGGING_CRIT_BUFFER_SIZE];
 static ::chip::PersistedCounter sGlobalEventIdCounter;
 static ::chip::app::CircularEventBuffer sLoggingBuffer[CHIP_NUM_EVENT_LOGGING_BUFFERS];
 #endif // CHIP_CONFIG_ENABLE_SERVER_IM_EVENT
 
 CHIP_ERROR Server::Init(const ServerInitParams & initParams)
 {
+#if 0
     CASESessionManagerConfig caseSessionManagerConfig;
     DeviceLayer::DeviceInfoProvider * deviceInfoprovider = nullptr;
 
@@ -115,7 +116,12 @@ CHIP_ERROR Server::Init(const ServerInitParams & initParams)
     // TODO(16969): Remove chip::Platform::MemoryInit() call from Server class, it belongs to outer code
     chip::Platform::MemoryInit();
 
-    SuccessOrExit(err = mCommissioningWindowManager.Init(this));
+#if CONFIG_NETWORK_LAYER_BLE
+    SuccessOrExit(err = mCommissioningWindowManager.Init(&GetSecureSessionManager(), &GetExchangeManager(), GetBleLayerObject()));
+#else
+    SuccessOrExit(err = mCommissioningWindowManager.Init(&GetSecureSessionManager(), &GetExchangeManager()));
+#endif
+
     mCommissioningWindowManager.SetAppDelegate(initParams.appDelegate);
 
     // Initialize PersistentStorageDelegate-based storage
@@ -133,6 +139,7 @@ CHIP_ERROR Server::Init(const ServerInitParams & initParams)
     SuccessOrExit(err);
 
     app::DnssdServer::Instance().SetFabricTable(&mFabrics);
+
     app::DnssdServer::Instance().SetCommissioningModeProvider(&mCommissioningWindowManager);
 
     mGroupsProvider = initParams.groupDataProvider;
@@ -288,13 +295,16 @@ exit:
         ChipLogProgress(AppServer, "Server Listening...");
     }
     return err;
+#endif
+
+    return CHIP_NO_ERROR;
 }
 
 void Server::RejoinExistingMulticastGroups()
 {
     ChipLogProgress(AppServer, "Joining Multicast groups");
     CHIP_ERROR err = CHIP_NO_ERROR;
-    for (const FabricInfo & fabric : mFabrics)
+    for (const FabricInfo & fabric : *mFabrics)
     {
         Credentials::GroupDataProvider::GroupInfo groupInfo;
 
@@ -349,11 +359,11 @@ void Server::Shutdown()
     {
         ChipLogError(AppServer, "Exchange Mgr shutdown: %" CHIP_ERROR_FORMAT, err.Format());
     }
-    mSessions.Shutdown();
+    mSessions->Shutdown();
     mTransports.Close();
 
     mAttributePersister.Shutdown();
-    mCommissioningWindowManager.Shutdown();
+    mCommissioningWindowManager->Shutdown();
     mCASESessionManager.Shutdown();
 
     // TODO(16969): Remove chip::Platform::MemoryInit() call from Server class, it belongs to outer code

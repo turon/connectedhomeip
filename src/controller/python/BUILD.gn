@@ -100,7 +100,7 @@ shared_library("ChipDeviceCtrl") {
 
   if (chip_controller) {
     public_deps += [
-      "${chip_root}/src/controller/data_model",
+      "${chip_root}/src/controller/python/data-model",
       "${chip_root}/src/credentials:file_attestation_trust_store",
     ]
   } else {

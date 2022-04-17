@@ -86,17 +86,17 @@ def main(app: str, factoryreset: bool, app_args: str, script: str, script_args: 
         app_args = [app] + shlex.split(app_args)
         logging.info(f"Execute: {app_args}")
         app_process = subprocess.Popen(
-            app_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=0)
-        DumpProgramOutputToQueue(
-            log_cooking_threads, "\33[34mAPP \33[0m", app_process, log_queue)
+            app_args, bufsize=0)
+        # DumpProgramOutputToQueue(
+        #     log_cooking_threads, "\33[34mAPP \33[0m", app_process, log_queue)
 
     script_command = ["/usr/bin/env", "python3", script, "--paa-trust-store-path", os.path.join(DEFAULT_CHIP_ROOT, MATTER_DEVELOPMENT_PAA_ROOT_CERTS),
                       '--log-format', '%(message)s'] + shlex.split(script_args)
     logging.info(f"Execute: {script_command}")
     test_script_process = subprocess.Popen(
-        script_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    DumpProgramOutputToQueue(log_cooking_threads, "\33[32mTEST\33[0m",
-                             test_script_process, log_queue)
+        script_command)
+    # DumpProgramOutputToQueue(log_cooking_threads, "\33[32mTEST\33[0m",
+    #                          test_script_process, log_queue)
 
     test_script_exit_code = test_script_process.wait()
 

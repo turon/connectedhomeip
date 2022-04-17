@@ -169,7 +169,15 @@ CHIP_ERROR DeviceControllerFactory::InitSystemState(FactoryInitParams params)
     ReturnErrorOnFailure(stateParams.exchangeMgr->Init(stateParams.sessionMgr));
     ReturnErrorOnFailure(stateParams.messageCounterManager->Init(stateParams.exchangeMgr));
 
-    InitDataModelHandler(stateParams.exchangeMgr);
+    if (params.enableServerInteractions)
+    {
+        stateParams.attributePersister = chip::Platform::New<app::DefaultAttributePersistenceProvider>();
+        ReturnErrorOnFailure(stateParams.attributePersister->Init(params.fabricIndependentStorage));
+        SetAttributePersistenceProvider(stateParams.attributePersister);
+    }
+    else {
+        InitDataModelHandler(stateParams.exchangeMgr);
+    }
 
     ReturnErrorOnFailure(chip::app::InteractionModelEngine::GetInstance()->Init(stateParams.exchangeMgr));
 
@@ -327,6 +335,8 @@ CHIP_ERROR DeviceControllerSystemState::Shutdown()
         chip::Platform::Delete(mCASEServer);
         mCASEServer = nullptr;
     }
+
+    (void)mAttributePersister;
 
     if (mCASESessionManager != nullptr)
     {

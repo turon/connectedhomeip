@@ -43,7 +43,22 @@
 #include "ChipDeviceController-ScriptDevicePairingDelegate.h"
 #include "ChipDeviceController-StorageDelegate.h"
 
+#include <credentials/GroupDataProvider.h>
+#include <credentials/GroupDataProviderImpl.h>
+#include <platform/CHIPDeviceLayer.h>
+#include <platform/DeviceInfoProvider.h>
+
+#include <app/server/Server.h>
+
+#include <app/server/CommissioningWindowManager.h>
+#include "access/AccessControl.h"
+#include "access/examples/ExampleAccessControlDelegate.h"
 #include "chip/interaction_model/Delegate.h"
+
+#include <credentials/DeviceAttestationCredsProvider.h>
+#include <credentials/examples/DeviceAttestationCredsExample.h>
+
+#include <app/util/DataModelHandler.h>
 
 #include <app/CommandSender.h>
 #include <app/DeviceProxy.h>
@@ -120,7 +135,7 @@ ChipError::StorageType pychip_DeviceController_GetFabricId(chip::Controller::Dev
 ChipError::StorageType pychip_DeviceController_ConnectBLE(chip::Controller::DeviceCommissioner * devCtrl, uint16_t discriminator,
                                                           uint32_t setupPINCode, chip::NodeId nodeid);
 ChipError::StorageType pychip_DeviceController_ConnectIP(chip::Controller::DeviceCommissioner * devCtrl, const char * peerAddrStr,
-                                                         uint32_t setupPINCode, chip::NodeId nodeid);
+                                                         uint32_t setupPINCode, chip::NodeId nodeid, uint16_t port);
 ChipError::StorageType pychip_DeviceController_SetThreadOperationalDataset(const char * threadOperationalDataset, uint32_t size);
 ChipError::StorageType pychip_DeviceController_SetWiFiCredentials(const char * ssid, const char * credentials);
 ChipError::StorageType pychip_DeviceController_CloseSession(chip::Controller::DeviceCommissioner * devCtrl, chip::NodeId nodeid);
@@ -216,10 +231,21 @@ chip::Controller::Python::StorageAdapter * pychip_Storage_GetStorageAdapter()
     return sStorageAdapter;
 }
 
+class DeviceTypeResolver : public chip::Access::AccessControl::DeviceTypeResolver
+{
+public:
+    bool IsDeviceTypeOnEndpoint(chip::DeviceTypeId deviceType, chip::EndpointId endpoint) override
+    {
+        return chip::app::IsDeviceTypeOnEndpoint(deviceType, endpoint);
+    }
+} sDeviceTypeResolver;
+
 ChipError::StorageType pychip_DeviceController_StackInit()
 {
     VerifyOrDie(sStorageAdapter != nullptr);
-
+    static Access::AccessControl sAccessControl;
+    static CommissioningWindowManager sCommissioningWindowManager;
+    
     FactoryInitParams factoryParams;
     factoryParams.fabricIndependentStorage = sStorageAdapter;
 
@@ -229,8 +255,23 @@ ChipError::StorageType pychip_DeviceController_StackInit()
     factoryParams.groupDataProvider        = &sGroupDataProvider;
     factoryParams.enableServerInteractions = true;
 
+    SetGroupDataProvider(&sGroupDataProvider);
+
     ReturnErrorOnFailure(DeviceControllerFactory::GetInstance().Init(factoryParams).AsInteger());
 
+    auto *systemState = DeviceControllerFactory::GetInstance().GetSystemState();
+    sCommissioningWindowManager.Init(systemState->SessionMgr(), systemState->ExchangeMgr());
+
+    auto *accessDelegate = Access::Examples::GetAccessControlDelegate(sStorageAdapter);
+    ReturnErrorOnFailure(sAccessControl.Init(accessDelegate, sDeviceTypeResolver).AsInteger());
+    Access::SetAccessControl(sAccessControl);
+
+    app::DnssdServer::Instance().SetCommissioningModeProvider(&sCommissioningWindowManager);
+
+    ReturnErrorOnFailure(sCommissioningWindowManager.OpenBasicCommissioningWindow().AsInteger());
+
+    SetDeviceAttestationCredentialsProvider(Examples::GetExampleDACProvider());
+    
     //
     // In situations where all the controller instances get shutdown, the entire stack is then also
     // implicitly shutdown. In the REPL, users can create such a situation by manually shutting down
@@ -241,6 +282,19 @@ ChipError::StorageType pychip_DeviceController_StackInit()
     // This retain call ensures the stack doesn't get de-initialized in the REPL.
     //
     DeviceControllerFactory::GetInstance().RetainSystemState();
+
+    Server::GetInstance().mSessions = systemState->SessionMgr();
+    Server::GetInstance().mCommissioningWindowManager = &sCommissioningWindowManager;
+    Server::GetInstance().mFabrics = systemState->Fabrics();
+    Server::GetInstance().mDeviceStorage = sStorageAdapter;
+
+    auto *deviceInfoprovider = DeviceLayer::GetDeviceInfoProvider();
+    if (deviceInfoprovider)
+    {
+        deviceInfoprovider->SetStorageDelegate(sStorageAdapter);
+    }
+    
+    InitDataModelHandler(systemState->ExchangeMgr());
 
     return CHIP_NO_ERROR.AsInteger();
 }
@@ -314,13 +368,17 @@ ChipError::StorageType pychip_DeviceController_ConnectBLE(chip::Controller::Devi
 }
 
 ChipError::StorageType pychip_DeviceController_ConnectIP(chip::Controller::DeviceCommissioner * devCtrl, const char * peerAddrStr,
-                                                         uint32_t setupPINCode, chip::NodeId nodeid)
+                                                         uint32_t setupPINCode, chip::NodeId nodeid, uint16_t port = 0)
 {
     chip::Inet::IPAddress peerAddr;
     chip::Transport::PeerAddress addr;
     chip::RendezvousParameters params = chip::RendezvousParameters().SetSetupPINCode(setupPINCode);
 
     VerifyOrReturnError(chip::Inet::IPAddress::FromString(peerAddrStr, peerAddr), CHIP_ERROR_INVALID_ARGUMENT.AsInteger());
+
+    if (port != 0) {
+        addr.SetPort(port);
+    }
 
     // TODO: IP rendezvous should use TCP connection.
     addr.SetTransportType(chip::Transport::Type::kUdp).SetIPAddress(peerAddr);

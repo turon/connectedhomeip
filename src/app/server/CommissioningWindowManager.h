@@ -35,18 +35,23 @@ enum class CommissioningWindowAdvertisement
 
 class Server;
 
+namespace Ble {
+class BleLayer;
+}
+
 class CommissioningWindowManager : public SessionEstablishmentDelegate, public app::CommissioningModeProvider
 {
 public:
     CommissioningWindowManager() {}
 
-    CHIP_ERROR Init(Server * server)
+    CHIP_ERROR Init(SessionManager *sessionManager, Messaging::ExchangeManager *exchangeManager, Ble::BleLayer *bleLayer = nullptr)
     {
-        if (server == nullptr)
-        {
-            return CHIP_ERROR_INVALID_ARGUMENT;
-        }
-        mServer = server;
+        mSessionManager = sessionManager;
+        mExchangeManager = exchangeManager;
+
+#if CONFIG_NETWORK_LAYER_BLE
+        mBleLayer = bleLayer;
+#endif
         return CHIP_NO_ERROR;
     }
 
@@ -141,7 +146,13 @@ private:
     static void HandleCommissioningWindowTimeout(chip::System::Layer * aSystemLayer, void * aAppState);
 
     AppDelegate * mAppDelegate = nullptr;
-    Server * mServer           = nullptr;
+
+    SessionManager *mSessionManager = nullptr;
+    Messaging::ExchangeManager *mExchangeManager = nullptr;
+#if CONFIG_NETWORK_LAYER_BLE
+    Ble::BleLayer *mBleLayer = nullptr;
+#endif 
+
 
     app::Clusters::AdministratorCommissioning::CommissioningWindowStatus mWindowStatus =
         app::Clusters::AdministratorCommissioning::CommissioningWindowStatus::kWindowNotOpen;

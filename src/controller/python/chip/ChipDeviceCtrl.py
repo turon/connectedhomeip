@@ -290,7 +290,7 @@ class ChipDeviceController():
     def CheckTestCommissionerPaseConnection(self, nodeid):
         return self._dmLib.pychip_TestPaseConnection(nodeid)
 
-    def CommissionIP(self, ipaddr, setupPinCode, nodeid):
+    def CommissionIP(self, ipaddr, setupPinCode, nodeid, port = 0):
         self.CheckIsActive()
 
         # IP connection will run through full commissioning, so we need to wait
@@ -301,7 +301,7 @@ class ChipDeviceController():
 
         self._ChipStack.CallAsync(
             lambda: self._dmLib.pychip_DeviceController_ConnectIP(
-                self.devCtrl, ipaddr, setupPinCode, nodeid)
+                self.devCtrl, ipaddr, setupPinCode, nodeid, port)
         )
         # Wait up to 5 additional seconds for the commissioning complete event
         if not self._ChipStack.commissioningCompleteEvent.isSet():
@@ -944,7 +944,7 @@ class ChipDeviceController():
             self._dmLib.pychip_DeviceController_ConnectBLE.restype = c_uint32
 
             self._dmLib.pychip_DeviceController_ConnectIP.argtypes = [
-                c_void_p, c_char_p, c_uint32, c_uint64]
+                c_void_p, c_char_p, c_uint32, c_uint64, c_uint16]
 
             self._dmLib.pychip_DeviceController_SetThreadOperationalDataset.argtypes = [
                 c_char_p, c_uint32]
@@ -996,7 +996,7 @@ class ChipDeviceController():
             self._dmLib.pychip_DeviceController_GetIPForDiscoveredDevice.restype = c_bool
 
             self._dmLib.pychip_DeviceController_ConnectIP.argtypes = [
-                c_void_p, c_char_p, c_uint32, c_uint64]
+                c_void_p, c_char_p, c_uint32, c_uint64, c_uint16]
             self._dmLib.pychip_DeviceController_ConnectIP.restype = c_uint32
 
             self._dmLib.pychip_DeviceController_CloseSession.argtypes = [

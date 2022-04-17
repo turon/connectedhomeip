@@ -148,7 +148,7 @@ public:
     // present in the system state object. If de-coupling is desired, RetainSystemState and
     // ReleaseSystemState can be used to avoid this.
     //
-    const DeviceControllerSystemState * GetSystemState() const { return mSystemState; }
+    DeviceControllerSystemState * GetSystemState() const { return mSystemState; }
 
     class ControllerFabricDelegate final : public FabricTableDelegate
     {

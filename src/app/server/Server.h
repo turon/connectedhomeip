@@ -208,13 +208,13 @@ public:
      */
     void RejoinExistingMulticastGroups();
 
-    FabricTable & GetFabricTable() { return mFabrics; }
+    FabricTable & GetFabricTable() { return *mFabrics; }
 
     CASESessionManager * GetCASESessionManager() { return &mCASESessionManager; }
 
     Messaging::ExchangeManager & GetExchangeManager() { return mExchangeMgr; }
 
-    SessionManager & GetSecureSessionManager() { return mSessions; }
+    SessionManager & GetSecureSessionManager() { return *mSessions; }
 
     SessionResumptionStorage * GetSessionResumptionStorage() { return mSessionResumptionStorage; }
 
@@ -226,7 +226,7 @@ public:
     Ble::BleLayer * GetBleLayerObject() { return mBleLayer; }
 #endif
 
-    CommissioningWindowManager & GetCommissioningWindowManager() { return mCommissioningWindowManager; }
+    CommissioningWindowManager & GetCommissioningWindowManager() { return *mCommissioningWindowManager; }
 
     PersistentStorageDelegate & GetPersistentStorage() { return *mDeviceStorage; }
 
@@ -316,8 +316,14 @@ private:
     Ble::BleLayer * mBleLayer = nullptr;
 #endif
 
+public:
+    CommissioningWindowManager *mCommissioningWindowManager = nullptr;
+    SessionManager *mSessions = nullptr;
+    FabricTable *mFabrics = nullptr;
+    PersistentStorageDelegate * mDeviceStorage;
+
+private:
     ServerTransportMgr mTransports;
-    SessionManager mSessions;
     CASEServer mCASEServer;
 
     CASESessionManager mCASESessionManager;
@@ -325,14 +331,11 @@ private:
     OperationalDeviceProxyPool<CHIP_CONFIG_DEVICE_MAX_ACTIVE_DEVICES> mDevicePool;
 
     Messaging::ExchangeManager mExchangeMgr;
-    FabricTable mFabrics;
     secure_channel::MessageCounterManager mMessageCounterManager;
 #if CHIP_DEVICE_CONFIG_ENABLE_COMMISSIONER_DISCOVERY_CLIENT
     chip::Protocols::UserDirectedCommissioning::UserDirectedCommissioningClient gUDCClient;
 #endif // CHIP_DEVICE_CONFIG_ENABLE_COMMISSIONER_DISCOVERY_CLIENT
-    CommissioningWindowManager mCommissioningWindowManager;
 
-    PersistentStorageDelegate * mDeviceStorage;
     SessionResumptionStorage * mSessionResumptionStorage;
     Credentials::GroupDataProvider * mGroupsProvider;
     app::DefaultAttributePersistenceProvider mAttributePersister;
@@ -341,8 +344,8 @@ private:
 
     Access::AccessControl mAccessControl;
 
-    uint16_t mOperationalServicePort;
-    uint16_t mUserDirectedCommissioningPort;
+    // uint16_t mOperationalServicePort;
+    // uint16_t mUserDirectedCommissioningPort;
     Inet::InterfaceId mInterfaceId;
 };
 

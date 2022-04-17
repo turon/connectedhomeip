@@ -37,6 +37,8 @@
 #include <protocols/secure_channel/CASEServer.h>
 #include <protocols/secure_channel/MessageCounterManager.h>
 
+#include <app/DefaultAttributePersistenceProvider.h>
+
 #include <transport/TransportMgr.h>
 #include <transport/raw/UDP.h>
 #if CONFIG_DEVICE_LAYER
@@ -91,6 +93,8 @@ struct DeviceControllerSystemStateParams
     CASESessionManager * caseSessionManager                       = nullptr;
     OperationalDevicePool * operationalDevicePool                 = nullptr;
     CASEClientPool * caseClientPool                               = nullptr;
+
+    app::DefaultAttributePersistenceProvider *attributePersister = nullptr;
 };
 
 // A representation of the internal state maintained by the DeviceControllerFactory
@@ -109,7 +113,8 @@ public:
         mExchangeMgr(params.exchangeMgr), mMessageCounterManager(params.messageCounterManager), mFabrics(params.fabricTable),
         mCASEServer(params.caseServer), mCASESessionManager(params.caseSessionManager),
         mOperationalDevicePool(params.operationalDevicePool), mCASEClientPool(params.caseClientPool),
-        mGroupDataProvider(params.groupDataProvider)
+        mGroupDataProvider(params.groupDataProvider),
+        mAttributePersister(params.attributePersister)
     {
 #if CONFIG_NETWORK_LAYER_BLE
         mBleLayer = params.bleLayer;
@@ -178,6 +183,9 @@ private:
     OperationalDevicePool * mOperationalDevicePool                 = nullptr;
     CASEClientPool * mCASEClientPool                               = nullptr;
     Credentials::GroupDataProvider * mGroupDataProvider            = nullptr;
+
+    app::DefaultAttributePersistenceProvider *mAttributePersister = nullptr;
+    
 
     std::atomic<uint32_t> mRefCount{ 1 };
 

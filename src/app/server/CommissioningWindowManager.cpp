@@ -55,7 +55,7 @@ void CommissioningWindowManager::OnPlatformEvent(const DeviceLayer::ChipDeviceEv
         DeviceLayer::SystemLayer().CancelTimer(HandleCommissioningWindowTimeout, this);
         mCommissioningTimeoutTimerArmed = false;
         Cleanup();
-        mServer->GetSecureSessionManager().ExpireAllPASEPairings();
+        mSessionManager->ExpireAllPASEPairings();
     }
     else if (event->Type == DeviceLayer::DeviceEventType::kFailSafeTimerExpired)
     {
@@ -115,7 +115,7 @@ void CommissioningWindowManager::HandleFailedAttempt(CHIP_ERROR err)
     mFailedCommissioningAttempts++;
     ChipLogError(AppServer, "Commissioning failed (attempt %d): %s", mFailedCommissioningAttempts, ErrorStr(err));
 #if CONFIG_NETWORK_LAYER_BLE
-    mServer->GetBleLayerObject()->CloseAllBleConnections();
+    mBleLayer->CloseAllBleConnections();
 #endif
     if (mFailedCommissioningAttempts < kMaxFailedCommissioningAttempts)
     {
@@ -148,7 +148,7 @@ void CommissioningWindowManager::OnSessionEstablished()
 {
     DeviceLayer::SystemLayer().CancelTimer(HandleSessionEstablishmentTimeout, this);
     SessionHolder sessionHolder;
-    CHIP_ERROR err = mServer->GetSecureSessionManager().NewPairing(
+    CHIP_ERROR err = mSessionManager->NewPairing(
         sessionHolder, Optional<Transport::PeerAddress>::Value(mPairingSession.GetPeerAddress()), mPairingSession.GetPeerNodeId(),
         &mPairingSession, CryptoContext::SessionRole::kResponder, 0);
     if (err != CHIP_NO_ERROR)
@@ -208,7 +208,7 @@ CHIP_ERROR CommissioningWindowManager::AdvertiseAndListenForPASE()
 
     mPairingSession.Clear();
 
-    ReturnErrorOnFailure(mServer->GetExchangeManager().RegisterUnsolicitedMessageHandlerForType(
+    ReturnErrorOnFailure(mExchangeManager->RegisterUnsolicitedMessageHandlerForType(
         Protocols::SecureChannel::MsgType::PBKDFParamRequest, &mPairingSession));
     mListeningForPASE = true;
 
@@ -216,7 +216,7 @@ CHIP_ERROR CommissioningWindowManager::AdvertiseAndListenForPASE()
     {
         ReturnErrorOnFailure(SetTemporaryDiscriminator(mECMDiscriminator));
         ReturnErrorOnFailure(mPairingSession.WaitForPairing(
-            mServer->GetSecureSessionManager(), mECMPASEVerifier, mECMIterations, ByteSpan(mECMSalt, mECMSaltLength),
+            *mSessionManager, mECMPASEVerifier, mECMIterations, ByteSpan(mECMSalt, mECMSaltLength),
             Optional<ReliableMessageProtocolConfig>::Value(GetLocalMRPConfig()), this));
     }
     else
@@ -238,7 +238,7 @@ CHIP_ERROR CommissioningWindowManager::AdvertiseAndListenForPASE()
 
         ReturnErrorOnFailure(verifier.Deserialize(ByteSpan(serializedVerifier)));
 
-        ReturnErrorOnFailure(mPairingSession.WaitForPairing(mServer->GetSecureSessionManager(), verifier, iterationCount, saltSpan,
+        ReturnErrorOnFailure(mPairingSession.WaitForPairing(*mSessionManager, verifier, iterationCount, saltSpan,
                                                             Optional<ReliableMessageProtocolConfig>::Value(GetLocalMRPConfig()),
                                                             this));
     }
@@ -254,9 +254,11 @@ CHIP_ERROR CommissioningWindowManager::OpenBasicCommissioningWindow(Seconds16 co
     RestoreDiscriminator();
 
 #if CONFIG_NETWORK_LAYER_BLE
-    // Enable BLE advertisements if commissioning window is to be opened on all supported
-    // transports, and BLE is supported on the current device.
-    SetBLE(advertisementMode == chip::CommissioningWindowAdvertisement::kAllSupported);
+    if (mBleLayer) {
+        // Enable BLE advertisements if commissioning window is to be opened on all supported
+        // transports, and BLE is supported on the current device.
+        SetBLE(advertisementMode == chip::CommissioningWindowAdvertisement::kAllSupported);
+    }
 #else
     SetBLE(false);
 #endif // CONFIG_NETWORK_LAYER_BLE
@@ -349,7 +351,7 @@ CHIP_ERROR CommissioningWindowManager::StartAdvertisement()
 #endif
 
 #if CONFIG_NETWORK_LAYER_BLE
-    if (mIsBLE)
+    if (mIsBLE && mBleLayer)
     {
         ReturnErrorOnFailure(chip::DeviceLayer::ConnectivityMgr().SetBLEAdvertisingEnabled(true));
     }
@@ -379,7 +381,7 @@ CHIP_ERROR CommissioningWindowManager::StopAdvertisement(bool aShuttingDown)
 {
     RestoreDiscriminator();
 
-    mServer->GetExchangeManager().UnregisterUnsolicitedMessageHandlerForType(Protocols::SecureChannel::MsgType::PBKDFParamRequest);
+    mExchangeManager->UnregisterUnsolicitedMessageHandlerForType(Protocols::SecureChannel::MsgType::PBKDFParamRequest);
     mListeningForPASE = false;
     mPairingSession.Clear();
 
