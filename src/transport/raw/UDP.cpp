@@ -51,7 +51,7 @@ CHIP_ERROR UDP::Init(UdpListenParameters & params)
 
     mUDPEndPoint->SetNativeParams(params.GetNativeParams());
 
-    ChipLogDetail(Inet, "UDP::Init bind&listen port=%d", params.GetListenPort());
+    ChipLogError(Inet, "UDP::Init bind&listen port=%d", params.GetListenPort());
 
     err = mUDPEndPoint->Bind(params.GetAddressType(), Inet::IPAddress::Any, params.GetListenPort(), params.GetInterfaceId());
     SuccessOrExit(err);
@@ -63,7 +63,7 @@ CHIP_ERROR UDP::Init(UdpListenParameters & params)
 
     mState = State::kInitialized;
 
-    ChipLogDetail(Inet, "UDP::Init bound to port=%d", mUDPEndPoint->GetBoundPort());
+    ChipLogError(Inet, "UDP::Init bound to port=%d", mUDPEndPoint->GetBoundPort());
 
 exit:
     if (err != CHIP_NO_ERROR)

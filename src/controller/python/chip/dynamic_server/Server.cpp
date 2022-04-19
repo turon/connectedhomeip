@@ -18,6 +18,7 @@
  *    limitations under the License.
  */
 
+#include "lib/core/DataModelTypes.h"
 #include <type_traits>
 
 #include <controller/CHIPDeviceController.h>
@@ -30,8 +31,16 @@
 #include <lib/support/ScopedBuffer.h>
 #include <lib/support/TestGroupData.h>
 #include <lib/support/logging/CHIPLogging.h>
+#include <map>
+#include <app/util/af-types.h>
+#include <app-common/zap-generated/attribute-type.h>
+#include <app/util/attribute-storage.h>
+#include <app/AttributeAccessInterface.h>
+#include <lib/core/Optional.h>
+#include <app/reporting/reporting.h>
 
 using namespace chip;
+using namespace chip::app;
 
 static_assert(std::is_same<uint32_t, ChipError::StorageType>::value, "python assumes CHIP_ERROR maps to c_uint32");
 
@@ -56,31 +65,117 @@ struct PyEmberAfEndpointType
     PyEmberAfCluster *cluster;
 };
 
-uint32_t pychip_Server_RegisterEndpoint(EndpointId endpointId, void *buf)
+using GetAttributeValueCb = void (*)(void *appContext, EndpointId endpointId, ClusterId clusterId, AttributeId attributeId, char * value, uint16_t * size);
+
+GetAttributeValueCb gGetValueCb;
+void *gGetAttributeContext = nullptr;
+
+}  // extern "C"
+
+namespace chip {
+namespace Controller {
+namespace Python  {
+
+class ClusterServerAdapter : public AttributeAccessInterface
 {
-    PyEmberAfEndpointType *endpointType = (PyEmberAfEndpointType *)(buf);
+public:
+    ClusterServerAdapter(EndpointId endpointId, ClusterId clusterId)   :
+        AttributeAccessInterface(MakeOptional(static_cast<EndpointId>(endpointId)), clusterId)
+                                 {}
+    CHIP_ERROR Read(const ConcreteReadAttributePath & aPath, AttributeValueEncoder & aEncoder) override;
 
-    printf("%d\n", endpointType->clusterCount);
+private:
+    char mScratchBuf[1280];
+};
 
-    PyEmberAfCluster *cluster = endpointType->cluster;
-    for (int i = 0; i < endpointType->clusterCount; i++) {
-        printf("\t%08x\n", cluster[i].clusterId);
-        printf("\t%d\n", cluster[i].attributeCount);
-
-        auto *attributeMetadata = cluster[i].attributes;
-        for (int j = 0; j < cluster[i].attributeCount; j++) {
-            printf("\t\t%d\n", attributeMetadata[j].attributeId);
-        }
+CHIP_ERROR ClusterServerAdapter::Read(const ConcreteReadAttributePath & aPath, AttributeValueEncoder & aEncoder)
+{
+    uint16_t len;
+    gGetValueCb(gGetAttributeContext, aPath.mEndpointId, aPath.mClusterId, aPath.mAttributeId, mScratchBuf, &len);
+    if (len == 0) {
+        return CHIP_ERROR_INVALID_ARGUMENT;
     }
 
-    // uint8_t *buf8 = (uint8_t *)buf;
-    // for (int i = 0; i < 200; i++) {
-    //     printf("%02x ", buf8[i]);
-    //     if (i % 7 == 0)
-    //         printf("\n");
-    // }
+    TLV::TLVReader reader;
+    uint8_t *tlvBuffer = reinterpret_cast<uint8_t *>(mScratchBuf);
+    reader.Init(tlvBuffer, static_cast<uint32_t>(len));
+
+    ReturnErrorOnFailure(reader.Next());
+
+    return aEncoder.EncodeAttributeReportIB(reader);
+}
+
+}
+}
+}
+
+extern "C" {
+
+void pychip_Server_RegisterAttributeGetterCallback(void * appContext, GetAttributeValueCb getValueCb) {
+    gGetAttributeContext = appContext;
+    gGetValueCb = getValueCb;    
+}
+
+void pychip_Server_RemoveEndpoint(uint16_t endpointIndex)
+{
+    emberAfClearDynamicEndpoint(endpointIndex);
+}
+
+uint32_t pychip_Server_RegisterEndpoint(EndpointId endpointId, uint16_t endpointIndex, void *buf, DeviceTypeId *deviceTypeList, uint16_t numDeviceTypes)
+{
+    PyEmberAfEndpointType *pyEndpointType = (PyEmberAfEndpointType *)(buf);
+    EmberAfEndpointType *endpoint = new EmberAfEndpointType();
+
+    endpoint->clusterCount = pyEndpointType->clusterCount;   
+    endpoint->cluster = new EmberAfCluster[endpoint->clusterCount];
+
+    auto *pyCluster = pyEndpointType->cluster;
+    EmberAfCluster *cluster = const_cast<EmberAfCluster *>(endpoint->cluster);
+
+    for (int i = 0; i < pyEndpointType->clusterCount; i++) {
+        cluster[i].clusterId = pyCluster[i].clusterId;
+
+        cluster[i].attributeCount = pyCluster[i].attributeCount;
+        cluster[i].mask = CLUSTER_MASK_SERVER;
+        cluster[i].clusterSize = 0;
+        cluster[i].functions = nullptr;
+        cluster[i].generatedCommandList = nullptr;
+        cluster[i].acceptedCommandList = nullptr;
+
+        cluster[i].attributes = new EmberAfAttributeMetadata[cluster[i].attributeCount];
+        auto *pyAttributeMetadata = pyCluster[i].attributes;
+        EmberAfAttributeMetadata *metadata = const_cast<EmberAfAttributeMetadata *>(cluster[i].attributes);
+
+        for (int j = 0; j < pyCluster[i].attributeCount; j++) {
+            metadata[j].attributeId = pyAttributeMetadata[j].attributeId;
+            metadata[j].attributeType = ZCL_INT8U_ATTRIBUTE_TYPE;
+            metadata[j].mask = ATTRIBUTE_MASK_EXTERNAL_STORAGE;
+            metadata[j].size = 0;
+        }
+
+        auto *clusterServerAdapter = new chip::Controller::Python::ClusterServerAdapter(endpointId, cluster[i].clusterId);
+        registerAttributeAccessOverride(clusterServerAdapter);
+    }
+
+    chip::DataVersion *dataVersionStorage = new chip::DataVersion[endpoint->clusterCount];
+    chip::Span<chip::DataVersion> versionSpan = {dataVersionStorage, endpoint->clusterCount};
+
+    EmberAfDeviceType *emberDeviceTypeList = new EmberAfDeviceType[numDeviceTypes];
+
+    for (int i = 0; i < numDeviceTypes; i++) {
+        emberDeviceTypeList[i].deviceId = static_cast<uint16_t>(deviceTypeList[i]);
+        emberDeviceTypeList[i].deviceVersion = 0;
+    }
+
+    chip::Span<EmberAfDeviceType> deviceTypeSpan = {emberDeviceTypeList, numDeviceTypes};
+    emberAfSetDynamicEndpoint(endpointIndex, endpointId, endpoint, versionSpan, deviceTypeSpan);
 
     return 0;
+}
+
+void pychip_Server_SetDirty(EndpointId endpointId, ClusterId clusterId, AttributeId attributeId)
+{
+    MatterReportingAttributeChangeCallback(endpointId, clusterId, attributeId);
 }
 
 } // extern "C"

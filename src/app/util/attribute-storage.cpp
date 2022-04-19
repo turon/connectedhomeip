@@ -219,21 +219,23 @@ EmberAfStatus emberAfSetDynamicEndpoint(uint16_t index, EndpointId id, const Emb
         return EMBER_ZCL_STATUS_INSUFFICIENT_SPACE;
     }
 
+#if 0
     index = static_cast<uint16_t>(realIndex);
     for (uint16_t i = FIXED_ENDPOINT_COUNT; i < MAX_ENDPOINT_COUNT; i++)
     {
-        if (emAfEndpoints[i].endpoint == id)
+        if (emAfEndpoints[i].endpoint == id && emAfEndpoints[i].bitmask != EMBER_AF_ENDPOINT_DISABLED)
         {
             return EMBER_ZCL_STATUS_DUPLICATE_EXISTS;
         }
     }
+#endif
 
-    emAfEndpoints[index].endpoint       = id;
-    emAfEndpoints[index].deviceTypeList = deviceTypeList;
-    emAfEndpoints[index].endpointType   = ep;
-    emAfEndpoints[index].dataVersions   = dataVersionStorage.data();
+    emAfEndpoints[realIndex].endpoint       = id;
+    emAfEndpoints[realIndex].deviceTypeList = deviceTypeList;
+    emAfEndpoints[realIndex].endpointType   = ep;
+    emAfEndpoints[realIndex].dataVersions   = dataVersionStorage.data();
     // Start the endpoint off as disabled.
-    emAfEndpoints[index].bitmask = EMBER_AF_ENDPOINT_DISABLED;
+    emAfEndpoints[realIndex].bitmask = EMBER_AF_ENDPOINT_DISABLED;
 
     emberAfSetDynamicEndpointCount(MAX_ENDPOINT_COUNT - FIXED_ENDPOINT_COUNT);
 

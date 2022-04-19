@@ -90,6 +90,8 @@ public:
         return DataModel::EncodeForRead(*(aAttributeReportIBs.GetAttributeReport().GetAttributeData().GetWriter()),
                                         TLV::ContextTag(to_underlying(AttributeDataIB::Tag::kData)), accessingFabricIndex, item);
     }
+
+    CHIP_ERROR EncodePreValue(AttributeReportIBs::Builder & aAttributeReportIBs, TLV::TLVReader & data);
 };
 
 /**
@@ -180,6 +182,17 @@ public:
     {
         mTriedEncode = true;
         return EncodeAttributeReportIB(std::forward<Ts>(aArgs)...);
+    }
+
+    CHIP_ERROR EncodeAttributeReportIB(TLV::TLVReader &data)
+    {
+        AttributeReportBuilder builder;
+
+        mTriedEncode = true;
+
+        ReturnErrorOnFailure(builder.PrepareAttribute(mAttributeReportIBsBuilder, mPath, mDataVersion));
+        ReturnErrorOnFailure(builder.EncodePreValue(mAttributeReportIBsBuilder, data));
+        return builder.FinishAttribute(mAttributeReportIBsBuilder);
     }
 
     /**
@@ -295,6 +308,7 @@ private:
         return builder.FinishAttribute(mAttributeReportIBsBuilder);
     }
 
+    
     /**
      * EnsureListStarted encodes the first item of one report with lists (an
      * empty list), as needed.

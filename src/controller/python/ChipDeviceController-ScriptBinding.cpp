@@ -415,7 +415,9 @@ ChipError::StorageType pychip_DeviceController_SetWiFiCredentials(const char * s
 
 ChipError::StorageType pychip_DeviceController_CloseSession(chip::Controller::DeviceCommissioner * devCtrl, chip::NodeId nodeid)
 {
-    return devCtrl->DisconnectDevice(nodeid).AsInteger();
+    devCtrl->DisconnectDevice(nodeid);
+    devCtrl->ReleaseOperationalDevice(nodeid);
+    return CHIP_NO_ERROR.AsInteger();
 }
 
 ChipError::StorageType pychip_DeviceController_EstablishPASESessionIP(chip::Controller::DeviceCommissioner * devCtrl,

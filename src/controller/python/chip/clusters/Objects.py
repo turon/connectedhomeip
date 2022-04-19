@@ -161,11 +161,11 @@ class PowerConfiguration(Cluster):
     battery3PercentageThreshold2: 'typing.Optional[uint]' = None
     battery3PercentageThreshold3: 'typing.Optional[uint]' = None
     battery3AlarmState: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -1189,7 +1189,7 @@ class DeviceTemperatureConfiguration(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    currentTemperature: 'int' = None
+    currentTemperature: 'int' = 0
     minTempExperienced: 'typing.Optional[int]' = None
     maxTempExperienced: 'typing.Optional[int]' = None
     overTempTotalDwell: 'typing.Optional[uint]' = None
@@ -1198,11 +1198,11 @@ class DeviceTemperatureConfiguration(Cluster):
     highTempThreshold: 'typing.Optional[int]' = None
     lowTempDwellTripPoint: 'typing.Optional[uint]' = None
     highTempDwellTripPoint: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -1451,13 +1451,13 @@ class Identify(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    identifyTime: 'uint' = None
-    identifyType: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    identifyTime: 'uint' = 0
+    identifyType: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class IdentifyEffectIdentifier(IntEnum):
@@ -1674,12 +1674,12 @@ class Groups(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    nameSupport: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    nameSupport: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -1967,17 +1967,17 @@ class Scenes(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    sceneCount: 'uint' = None
-    currentScene: 'uint' = None
-    currentGroup: 'uint' = None
-    sceneValid: 'bool' = None
-    nameSupport: 'uint' = None
+    sceneCount: 'uint' = 0
+    currentScene: 'uint' = 0
+    currentGroup: 'uint' = 0
+    sceneValid: 'bool' = False
+    nameSupport: 'uint' = 0
     lastConfiguredBy: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
     class Structs:
@@ -2570,16 +2570,16 @@ class OnOff(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    onOff: 'bool' = None
+    onOff: 'bool' = False
     globalSceneControl: 'typing.Optional[bool]' = None
     onTime: 'typing.Optional[uint]' = None
     offWaitTime: 'typing.Optional[uint]' = None
     startUpOnOff: 'typing.Union[None, Nullable, OnOff.Enums.OnOffStartUpOnOff]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class OnOffDelayedAllOffEffectVariant(IntEnum):
@@ -2871,13 +2871,13 @@ class OnOffSwitchConfiguration(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    switchType: 'uint' = None
-    switchActions: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    switchType: 'uint' = 0
+    switchActions: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -3026,7 +3026,7 @@ class LevelControl(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    currentLevel: 'uint' = None
+    currentLevel: 'uint' = 0
     remainingTime: 'typing.Optional[uint]' = None
     minLevel: 'typing.Optional[uint]' = None
     maxLevel: 'typing.Optional[uint]' = None
@@ -3040,11 +3040,11 @@ class LevelControl(Cluster):
     offTransitionTime: 'typing.Union[None, Nullable, uint]' = None
     defaultMoveRate: 'typing.Union[None, Nullable, uint]' = None
     startUpCurrentLevel: 'typing.Union[None, Nullable, uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class MoveMode(IntEnum):
@@ -3531,11 +3531,11 @@ class Alarms(Cluster):
             ])
 
     alarmCount: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -3759,8 +3759,8 @@ class Time(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    time: 'uint' = None
-    timeStatus: 'uint' = None
+    time: 'uint' = 0
+    timeStatus: 'uint' = 0
     timeZone: 'typing.Optional[int]' = None
     dstStart: 'typing.Optional[uint]' = None
     dstEnd: 'typing.Optional[uint]' = None
@@ -3769,11 +3769,11 @@ class Time(Cluster):
     localTime: 'typing.Optional[uint]' = None
     lastSetTime: 'typing.Optional[uint]' = None
     validUntilTime: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -4048,17 +4048,17 @@ class BinaryInputBasic(Cluster):
     activeText: 'typing.Optional[str]' = None
     description: 'typing.Optional[str]' = None
     inactiveText: 'typing.Optional[str]' = None
-    outOfService: 'bool' = None
+    outOfService: 'bool' = False
     polarity: 'typing.Optional[uint]' = None
-    presentValue: 'bool' = None
+    presentValue: 'bool' = False
     reliability: 'typing.Optional[uint]' = None
-    statusFlags: 'uint' = None
+    statusFlags: 'uint' = 0
     applicationType: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -4310,16 +4310,16 @@ class PowerProfile(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    totalProfileNum: 'uint' = None
-    multipleScheduling: 'bool' = None
-    energyFormatting: 'uint' = None
-    energyRemote: 'bool' = None
-    scheduleMode: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    totalProfileNum: 'uint' = 0
+    multipleScheduling: 'bool' = False
+    energyFormatting: 'uint' = 0
+    energyRemote: 'bool' = False
+    scheduleMode: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
     class Structs:
@@ -4930,14 +4930,14 @@ class ApplianceControl(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    startTime: 'uint' = None
-    finishTime: 'uint' = None
+    startTime: 'uint' = 0
+    finishTime: 'uint' = 0
     remainingTime: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class ApplianceStatus(IntEnum):
@@ -5253,11 +5253,11 @@ class PulseWidthModulation(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -5364,15 +5364,15 @@ class Descriptor(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    deviceList: 'typing.List[Descriptor.Structs.DeviceType]' = None
-    serverList: 'typing.List[uint]' = None
-    clientList: 'typing.List[uint]' = None
-    partsList: 'typing.List[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    deviceList: 'typing.List[Descriptor.Structs.DeviceType]' = field(default_factory=lambda: [])
+    serverList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    clientList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    partsList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
     class Structs:
@@ -5555,12 +5555,12 @@ class Binding(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    binding: 'typing.List[Binding.Structs.TargetStruct]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    binding: 'typing.List[Binding.Structs.TargetStruct]' = field(default_factory=lambda: [])
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
     class Structs:
@@ -5705,16 +5705,16 @@ class AccessControl(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    acl: 'typing.List[AccessControl.Structs.AccessControlEntry]' = None
-    extension: 'typing.List[AccessControl.Structs.ExtensionEntry]' = None
-    subjectsPerAccessControlEntry: 'uint' = None
-    targetsPerAccessControlEntry: 'uint' = None
-    accessControlEntriesPerFabric: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    acl: 'typing.List[AccessControl.Structs.AccessControlEntry]' = field(default_factory=lambda: [])
+    extension: 'typing.List[AccessControl.Structs.ExtensionEntry]' = field(default_factory=lambda: [])
+    subjectsPerAccessControlEntry: 'uint' = 0
+    targetsPerAccessControlEntry: 'uint' = 0
+    accessControlEntriesPerFabric: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class AuthMode(IntEnum):
@@ -6026,18 +6026,18 @@ class PollControl(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    checkInInterval: 'uint' = None
-    longPollInterval: 'uint' = None
-    shortPollInterval: 'uint' = None
-    fastPollTimeout: 'uint' = None
+    checkInInterval: 'uint' = 0
+    longPollInterval: 'uint' = 0
+    shortPollInterval: 'uint' = 0
+    fastPollTimeout: 'uint' = 0
     checkInIntervalMin: 'typing.Optional[uint]' = None
     longPollIntervalMin: 'typing.Optional[uint]' = None
     fastPollTimeoutMax: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -6329,14 +6329,14 @@ class BridgedActions(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    actionList: 'typing.List[BridgedActions.Structs.ActionStruct]' = None
-    endpointList: 'typing.List[BridgedActions.Structs.EndpointListStruct]' = None
+    actionList: 'typing.List[BridgedActions.Structs.ActionStruct]' = field(default_factory=lambda: [])
+    endpointList: 'typing.List[BridgedActions.Structs.EndpointListStruct]' = field(default_factory=lambda: [])
     setupUrl: 'typing.Optional[str]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class ActionErrorEnum(IntEnum):
@@ -6836,17 +6836,17 @@ class Basic(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    dataModelRevision: 'uint' = None
-    vendorName: 'str' = None
-    vendorID: 'uint' = None
-    productName: 'str' = None
-    productID: 'uint' = None
-    nodeLabel: 'str' = None
-    location: 'str' = None
-    hardwareVersion: 'uint' = None
-    hardwareVersionString: 'str' = None
-    softwareVersion: 'uint' = None
-    softwareVersionString: 'str' = None
+    dataModelRevision: 'uint' = 0
+    vendorName: 'str' = ""
+    vendorID: 'uint' = 0
+    productName: 'str' = ""
+    productID: 'uint' = 0
+    nodeLabel: 'str' = ""
+    location: 'str' = ""
+    hardwareVersion: 'uint' = 0
+    hardwareVersionString: 'str' = ""
+    softwareVersion: 'uint' = 0
+    softwareVersionString: 'str' = ""
     manufacturingDate: 'typing.Optional[str]' = None
     partNumber: 'typing.Optional[str]' = None
     productURL: 'typing.Optional[str]' = None
@@ -6855,12 +6855,12 @@ class Basic(Cluster):
     localConfigDisabled: 'typing.Optional[bool]' = None
     reachable: 'typing.Optional[bool]' = None
     uniqueID: 'typing.Optional[str]' = None
-    capabilityMinima: 'Basic.Structs.CapabilityMinimaStruct' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    capabilityMinima: 'Basic.Structs.CapabilityMinimaStruct' = field(default_factory=lambda: Basic.Structs.CapabilityMinimaStruct())
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
     class Structs:
@@ -7385,11 +7385,11 @@ class OtaSoftwareUpdateProvider(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class OTAApplyUpdateAction(IntEnum):
@@ -7624,15 +7624,15 @@ class OtaSoftwareUpdateRequestor(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    defaultOtaProviders: 'typing.List[OtaSoftwareUpdateRequestor.Structs.ProviderLocation]' = None
-    updatePossible: 'bool' = None
-    updateState: 'OtaSoftwareUpdateRequestor.Enums.OTAUpdateStateEnum' = None
-    updateStateProgress: 'typing.Union[Nullable, uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    defaultOtaProviders: 'typing.List[OtaSoftwareUpdateRequestor.Structs.ProviderLocation]' = field(default_factory=lambda: [])
+    updatePossible: 'bool' = False
+    updateState: 'OtaSoftwareUpdateRequestor.Enums.OTAUpdateStateEnum' = 0
+    updateStateProgress: 'typing.Union[Nullable, uint]' = NullValue
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class OTAAnnouncementReason(IntEnum):
@@ -7938,13 +7938,13 @@ class LocalizationConfiguration(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    activeLocale: 'str' = None
-    supportedLocales: 'typing.List[str]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    activeLocale: 'str' = ""
+    supportedLocales: 'typing.List[str]' = field(default_factory=lambda: [])
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -8082,14 +8082,14 @@ class TimeFormatLocalization(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    hourFormat: 'TimeFormatLocalization.Enums.HourFormat' = None
+    hourFormat: 'TimeFormatLocalization.Enums.HourFormat' = 0
     activeCalendarType: 'typing.Optional[TimeFormatLocalization.Enums.CalendarType]' = None
     supportedCalendarTypes: 'typing.Optional[typing.List[TimeFormatLocalization.Enums.CalendarType]]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class CalendarType(IntEnum):
@@ -8261,11 +8261,11 @@ class UnitLocalization(Cluster):
             ])
 
     temperatureUnit: 'typing.Optional[UnitLocalization.Enums.TempUnit]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class TempUnit(IntEnum):
@@ -8391,12 +8391,12 @@ class PowerSourceConfiguration(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    sources: 'typing.List[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    sources: 'typing.List[uint]' = field(default_factory=lambda: [])
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -8546,9 +8546,9 @@ class PowerSource(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    status: 'uint' = None
-    order: 'uint' = None
-    description: 'str' = None
+    status: 'uint' = 0
+    order: 'uint' = 0
+    description: 'str' = ""
     wiredAssessedInputVoltage: 'typing.Optional[uint]' = None
     wiredAssessedInputFrequency: 'typing.Optional[uint]' = None
     wiredCurrentType: 'typing.Optional[uint]' = None
@@ -8577,11 +8577,11 @@ class PowerSource(Cluster):
     batteryFunctionalWhileCharging: 'typing.Optional[bool]' = None
     batteryChargingCurrent: 'typing.Optional[uint]' = None
     activeBatteryChargeFaults: 'typing.Optional[typing.List[uint]]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class BatChargeFaultType(IntEnum):
@@ -9277,16 +9277,16 @@ class GeneralCommissioning(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    breadcrumb: 'uint' = None
-    basicCommissioningInfo: 'GeneralCommissioning.Structs.BasicCommissioningInfo' = None
-    regulatoryConfig: 'GeneralCommissioning.Enums.RegulatoryLocationType' = None
-    locationCapability: 'GeneralCommissioning.Enums.RegulatoryLocationType' = None
-    supportsConcurrentConnection: 'bool' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    breadcrumb: 'uint' = 0
+    basicCommissioningInfo: 'GeneralCommissioning.Structs.BasicCommissioningInfo' = field(default_factory=lambda: GeneralCommissioning.Structs.BasicCommissioningInfo())
+    regulatoryConfig: 'GeneralCommissioning.Enums.RegulatoryLocationType' = 0
+    locationCapability: 'GeneralCommissioning.Enums.RegulatoryLocationType' = 0
+    supportsConcurrentConnection: 'bool' = False
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class CommissioningError(IntEnum):
@@ -9604,19 +9604,19 @@ class NetworkCommissioning(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    maxNetworks: 'uint' = None
-    networks: 'typing.List[NetworkCommissioning.Structs.NetworkInfo]' = None
+    maxNetworks: 'uint' = 0
+    networks: 'typing.List[NetworkCommissioning.Structs.NetworkInfo]' = field(default_factory=lambda: [])
     scanMaxTimeSeconds: 'typing.Optional[uint]' = None
     connectMaxTimeSeconds: 'typing.Optional[uint]' = None
-    interfaceEnabled: 'bool' = None
-    lastNetworkingStatus: 'typing.Union[Nullable, NetworkCommissioning.Enums.NetworkCommissioningStatus]' = None
-    lastNetworkID: 'typing.Union[Nullable, bytes]' = None
-    lastConnectErrorValue: 'typing.Union[Nullable, int]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    interfaceEnabled: 'bool' = False
+    lastNetworkingStatus: 'typing.Union[Nullable, NetworkCommissioning.Enums.NetworkCommissioningStatus]' = NullValue
+    lastNetworkID: 'typing.Union[Nullable, bytes]' = NullValue
+    lastConnectErrorValue: 'typing.Union[Nullable, int]' = NullValue
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class NetworkCommissioningStatus(IntEnum):
@@ -10097,11 +10097,11 @@ class DiagnosticLogs(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class LogsIntent(IntEnum):
@@ -10270,19 +10270,19 @@ class GeneralDiagnostics(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    networkInterfaces: 'typing.List[GeneralDiagnostics.Structs.NetworkInterfaceType]' = None
-    rebootCount: 'uint' = None
+    networkInterfaces: 'typing.List[GeneralDiagnostics.Structs.NetworkInterfaceType]' = field(default_factory=lambda: [])
+    rebootCount: 'uint' = 0
     upTime: 'typing.Optional[uint]' = None
     totalOperationalHours: 'typing.Optional[uint]' = None
     bootReasons: 'typing.Optional[uint]' = None
     activeHardwareFaults: 'typing.Optional[typing.List[uint]]' = None
     activeRadioFaults: 'typing.Optional[typing.List[uint]]' = None
     activeNetworkFaults: 'typing.Optional[typing.List[uint]]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class BootReasonType(IntEnum):
@@ -10676,11 +10676,11 @@ class SoftwareDiagnostics(Cluster):
     currentHeapFree: 'typing.Optional[uint]' = None
     currentHeapUsed: 'typing.Optional[uint]' = None
     currentHeapHighWatermark: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
     class Structs:
@@ -10980,20 +10980,20 @@ class ThreadNetworkDiagnostics(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    channel: 'uint' = None
-    routingRole: 'uint' = None
-    networkName: 'str' = None
-    panId: 'uint' = None
-    extendedPanId: 'uint' = None
-    meshLocalPrefix: 'bytes' = None
+    channel: 'uint' = 0
+    routingRole: 'uint' = 0
+    networkName: 'str' = ""
+    panId: 'uint' = 0
+    extendedPanId: 'uint' = 0
+    meshLocalPrefix: 'bytes' = b""
     overrunCount: 'typing.Optional[uint]' = None
-    neighborTableList: 'typing.List[ThreadNetworkDiagnostics.Structs.NeighborTable]' = None
-    routeTableList: 'typing.List[ThreadNetworkDiagnostics.Structs.RouteTable]' = None
-    partitionId: 'uint' = None
-    weighting: 'uint' = None
-    dataVersion: 'uint' = None
-    stableDataVersion: 'uint' = None
-    leaderRouterId: 'uint' = None
+    neighborTableList: 'typing.List[ThreadNetworkDiagnostics.Structs.NeighborTable]' = field(default_factory=lambda: [])
+    routeTableList: 'typing.List[ThreadNetworkDiagnostics.Structs.RouteTable]' = field(default_factory=lambda: [])
+    partitionId: 'uint' = 0
+    weighting: 'uint' = 0
+    dataVersion: 'uint' = 0
+    stableDataVersion: 'uint' = 0
+    leaderRouterId: 'uint' = 0
     detachedRoleCount: 'typing.Optional[uint]' = None
     childRoleCount: 'typing.Optional[uint]' = None
     routerRoleCount: 'typing.Optional[uint]' = None
@@ -11039,15 +11039,15 @@ class ThreadNetworkDiagnostics(Cluster):
     activeTimestamp: 'typing.Optional[uint]' = None
     pendingTimestamp: 'typing.Optional[uint]' = None
     delay: 'typing.Optional[uint]' = None
-    securityPolicy: 'typing.List[ThreadNetworkDiagnostics.Structs.SecurityPolicy]' = None
-    channelMask: 'bytes' = None
-    operationalDatasetComponents: 'typing.List[ThreadNetworkDiagnostics.Structs.OperationalDatasetComponents]' = None
-    activeNetworkFaultsList: 'typing.List[ThreadNetworkDiagnostics.Enums.NetworkFault]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    securityPolicy: 'typing.List[ThreadNetworkDiagnostics.Structs.SecurityPolicy]' = field(default_factory=lambda: [])
+    channelMask: 'bytes' = b""
+    operationalDatasetComponents: 'typing.List[ThreadNetworkDiagnostics.Structs.OperationalDatasetComponents]' = field(default_factory=lambda: [])
+    activeNetworkFaultsList: 'typing.List[ThreadNetworkDiagnostics.Enums.NetworkFault]' = field(default_factory=lambda: [])
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class NetworkFault(IntEnum):
@@ -12339,11 +12339,11 @@ class WiFiNetworkDiagnostics(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    bssid: 'typing.Union[Nullable, bytes]' = None
-    securityType: 'typing.Union[Nullable, WiFiNetworkDiagnostics.Enums.SecurityType]' = None
-    wiFiVersion: 'typing.Union[Nullable, WiFiNetworkDiagnostics.Enums.WiFiVersionType]' = None
-    channelNumber: 'typing.Union[Nullable, uint]' = None
-    rssi: 'typing.Union[Nullable, int]' = None
+    bssid: 'typing.Union[Nullable, bytes]' = NullValue
+    securityType: 'typing.Union[Nullable, WiFiNetworkDiagnostics.Enums.SecurityType]' = NullValue
+    wiFiVersion: 'typing.Union[Nullable, WiFiNetworkDiagnostics.Enums.WiFiVersionType]' = NullValue
+    channelNumber: 'typing.Union[Nullable, uint]' = NullValue
+    rssi: 'typing.Union[Nullable, int]' = NullValue
     beaconLostCount: 'typing.Optional[uint]' = None
     beaconRxCount: 'typing.Optional[uint]' = None
     packetMulticastRxCount: 'typing.Optional[uint]' = None
@@ -12352,11 +12352,11 @@ class WiFiNetworkDiagnostics(Cluster):
     packetUnicastTxCount: 'typing.Optional[uint]' = None
     currentMaxRate: 'typing.Optional[uint]' = None
     overrunCount: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class AssociationFailureCause(IntEnum):
@@ -12786,11 +12786,11 @@ class EthernetNetworkDiagnostics(Cluster):
     overrunCount: 'typing.Optional[uint]' = None
     carrierDetect: 'typing.Union[None, Nullable, bool]' = None
     timeSinceReset: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class PHYRateType(IntEnum):
@@ -13064,11 +13064,11 @@ class TimeSynchronization(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -13199,13 +13199,13 @@ class BridgedDeviceBasic(Cluster):
     productURL: 'typing.Optional[str]' = None
     productLabel: 'typing.Optional[str]' = None
     serialNumber: 'typing.Optional[str]' = None
-    reachable: 'bool' = None
+    reachable: 'bool' = False
     uniqueID: 'typing.Optional[str]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -13624,14 +13624,14 @@ class Switch(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    numberOfPositions: 'uint' = None
-    currentPosition: 'uint' = None
-    multiPressMax: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    numberOfPositions: 'uint' = 0
+    currentPosition: 'uint' = 0
+    multiPressMax: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -13923,14 +13923,14 @@ class AdministratorCommissioning(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    windowStatus: 'uint' = None
-    adminFabricIndex: 'uint' = None
-    adminVendorId: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    windowStatus: 'uint' = 0
+    adminFabricIndex: 'uint' = 0
+    adminVendorId: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class CommissioningWindowStatus(IntEnum):
@@ -14162,17 +14162,17 @@ class OperationalCredentials(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    NOCs: 'typing.List[OperationalCredentials.Structs.NOCStruct]' = None
-    fabrics: 'typing.List[OperationalCredentials.Structs.FabricDescriptor]' = None
-    supportedFabrics: 'uint' = None
-    commissionedFabrics: 'uint' = None
-    trustedRootCertificates: 'typing.List[bytes]' = None
-    currentFabricIndex: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    NOCs: 'typing.List[OperationalCredentials.Structs.NOCStruct]' = field(default_factory=lambda: [])
+    fabrics: 'typing.List[OperationalCredentials.Structs.FabricDescriptor]' = field(default_factory=lambda: [])
+    supportedFabrics: 'uint' = 0
+    commissionedFabrics: 'uint' = 0
+    trustedRootCertificates: 'typing.List[bytes]' = field(default_factory=lambda: [])
+    currentFabricIndex: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class OperationalCertStatus(IntEnum):
@@ -14640,15 +14640,15 @@ class GroupKeyManagement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    groupKeyMap: 'typing.List[GroupKeyManagement.Structs.GroupKeyMapStruct]' = None
-    groupTable: 'typing.List[GroupKeyManagement.Structs.GroupInfoMapStruct]' = None
-    maxGroupsPerFabric: 'uint' = None
-    maxGroupKeysPerFabric: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    groupKeyMap: 'typing.List[GroupKeyManagement.Structs.GroupKeyMapStruct]' = field(default_factory=lambda: [])
+    groupTable: 'typing.List[GroupKeyManagement.Structs.GroupInfoMapStruct]' = field(default_factory=lambda: [])
+    maxGroupsPerFabric: 'uint' = 0
+    maxGroupKeysPerFabric: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class GroupKeySecurityPolicy(IntEnum):
@@ -14971,12 +14971,12 @@ class FixedLabel(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    labelList: 'typing.List[FixedLabel.Structs.LabelStruct]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    labelList: 'typing.List[FixedLabel.Structs.LabelStruct]' = field(default_factory=lambda: [])
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
     class Structs:
@@ -15111,12 +15111,12 @@ class UserLabel(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    labelList: 'typing.List[UserLabel.Structs.LabelStruct]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    labelList: 'typing.List[UserLabel.Structs.LabelStruct]' = field(default_factory=lambda: [])
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
     class Structs:
@@ -15250,11 +15250,11 @@ class ProxyConfiguration(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -15357,11 +15357,11 @@ class ProxyDiscovery(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -15464,11 +15464,11 @@ class ProxyValid(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -15572,12 +15572,12 @@ class BooleanState(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    stateValue: 'bool' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    stateValue: 'bool' = False
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -15722,17 +15722,17 @@ class ModeSelect(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    description: 'str' = None
-    standardNamespace: 'typing.Union[Nullable, uint]' = None
-    supportedModes: 'typing.List[ModeSelect.Structs.ModeOptionStruct]' = None
-    currentMode: 'uint' = None
+    description: 'str' = ""
+    standardNamespace: 'typing.Union[Nullable, uint]' = NullValue
+    supportedModes: 'typing.List[ModeSelect.Structs.ModeOptionStruct]' = field(default_factory=lambda: [])
+    currentMode: 'uint' = 0
     startUpMode: 'typing.Union[None, Nullable, uint]' = None
     onMode: 'typing.Union[None, Nullable, uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
     class Structs:
@@ -15984,14 +15984,14 @@ class ShadeConfiguration(Cluster):
 
     physicalClosedLimit: 'typing.Optional[uint]' = None
     motorStepSize: 'typing.Optional[uint]' = None
-    status: 'uint' = None
-    closedLimit: 'uint' = None
-    mode: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    status: 'uint' = 0
+    closedLimit: 'uint' = 0
+    mode: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -16219,9 +16219,9 @@ class DoorLock(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    lockState: 'typing.Union[Nullable, DoorLock.Enums.DlLockState]' = None
-    lockType: 'DoorLock.Enums.DlLockType' = None
-    actuatorEnabled: 'bool' = None
+    lockState: 'typing.Union[Nullable, DoorLock.Enums.DlLockState]' = NullValue
+    lockType: 'DoorLock.Enums.DlLockType' = 0
+    actuatorEnabled: 'bool' = False
     doorState: 'typing.Union[None, Nullable, DoorLock.Enums.DlDoorState]' = None
     doorOpenEvents: 'typing.Optional[uint]' = None
     doorClosedEvents: 'typing.Optional[uint]' = None
@@ -16241,10 +16241,10 @@ class DoorLock(Cluster):
     enableLogging: 'typing.Optional[bool]' = None
     language: 'typing.Optional[str]' = None
     LEDSettings: 'typing.Optional[uint]' = None
-    autoRelockTime: 'uint' = None
+    autoRelockTime: 'uint' = 0
     soundVolume: 'typing.Optional[uint]' = None
-    operatingMode: 'DoorLock.Enums.DlOperatingMode' = None
-    supportedOperatingModes: 'uint' = None
+    operatingMode: 'DoorLock.Enums.DlOperatingMode' = 0
+    supportedOperatingModes: 'uint' = 0
     defaultConfigurationRegister: 'typing.Optional[uint]' = None
     enableLocalProgramming: 'typing.Optional[bool]' = None
     enableOneTouchLocking: 'typing.Optional[bool]' = None
@@ -16264,11 +16264,11 @@ class DoorLock(Cluster):
     keypadProgrammingEventMask: 'typing.Optional[uint]' = None
     remoteProgrammingEventMask: 'typing.Optional[uint]' = None
     RFIDProgrammingEventMask: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class DlAlarmCode(IntEnum):
@@ -18316,33 +18316,33 @@ class WindowCovering(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    type: 'WindowCovering.Enums.Type' = None
+    type: 'WindowCovering.Enums.Type' = 0
     physicalClosedLimitLift: 'typing.Optional[uint]' = None
     physicalClosedLimitTilt: 'typing.Optional[uint]' = None
     currentPositionLift: 'typing.Union[None, Nullable, uint]' = None
     currentPositionTilt: 'typing.Union[None, Nullable, uint]' = None
     numberOfActuationsLift: 'typing.Optional[uint]' = None
     numberOfActuationsTilt: 'typing.Optional[uint]' = None
-    configStatus: 'uint' = None
+    configStatus: 'uint' = 0
     currentPositionLiftPercentage: 'typing.Union[None, Nullable, uint]' = None
     currentPositionTiltPercentage: 'typing.Union[None, Nullable, uint]' = None
-    operationalStatus: 'uint' = None
+    operationalStatus: 'uint' = 0
     targetPositionLiftPercent100ths: 'typing.Union[None, Nullable, uint]' = None
     targetPositionTiltPercent100ths: 'typing.Union[None, Nullable, uint]' = None
-    endProductType: 'WindowCovering.Enums.EndProductType' = None
+    endProductType: 'WindowCovering.Enums.EndProductType' = 0
     currentPositionLiftPercent100ths: 'typing.Union[None, Nullable, uint]' = None
     currentPositionTiltPercent100ths: 'typing.Union[None, Nullable, uint]' = None
     installedOpenLimitLift: 'typing.Optional[uint]' = None
     installedClosedLimitLift: 'typing.Optional[uint]' = None
     installedOpenLimitTilt: 'typing.Optional[uint]' = None
     installedClosedLimitTilt: 'typing.Optional[uint]' = None
-    mode: 'uint' = None
+    mode: 'uint' = 0
     safetyStatus: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class EndProductType(IntEnum):
@@ -18952,21 +18952,21 @@ class BarrierControl(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    barrierMovingState: 'uint' = None
-    barrierSafetyStatus: 'uint' = None
-    barrierCapabilities: 'uint' = None
+    barrierMovingState: 'uint' = 0
+    barrierSafetyStatus: 'uint' = 0
+    barrierCapabilities: 'uint' = 0
     barrierOpenEvents: 'typing.Optional[uint]' = None
     barrierCloseEvents: 'typing.Optional[uint]' = None
     barrierCommandOpenEvents: 'typing.Optional[uint]' = None
     barrierCommandCloseEvents: 'typing.Optional[uint]' = None
     barrierOpenPeriod: 'typing.Optional[uint]' = None
     barrierClosePeriod: 'typing.Optional[uint]' = None
-    barrierPosition: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    barrierPosition: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -19282,9 +19282,9 @@ class PumpConfigurationAndControl(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    maxPressure: 'int' = None
-    maxSpeed: 'uint' = None
-    maxFlow: 'uint' = None
+    maxPressure: 'int' = 0
+    maxSpeed: 'uint' = 0
+    maxFlow: 'uint' = 0
     minConstPressure: 'typing.Optional[int]' = None
     maxConstPressure: 'typing.Optional[int]' = None
     minCompPressure: 'typing.Optional[int]' = None
@@ -19296,21 +19296,21 @@ class PumpConfigurationAndControl(Cluster):
     minConstTemp: 'typing.Optional[int]' = None
     maxConstTemp: 'typing.Optional[int]' = None
     pumpStatus: 'typing.Optional[uint]' = None
-    effectiveOperationMode: 'uint' = None
-    effectiveControlMode: 'uint' = None
-    capacity: 'int' = None
+    effectiveOperationMode: 'uint' = 0
+    effectiveControlMode: 'uint' = 0
+    capacity: 'int' = 0
     speed: 'typing.Optional[uint]' = None
     lifetimeRunningHours: 'typing.Union[None, Nullable, uint]' = None
     power: 'typing.Optional[uint]' = None
     lifetimeEnergyConsumed: 'typing.Union[None, Nullable, uint]' = None
-    operationMode: 'uint' = None
+    operationMode: 'uint' = 0
     controlMode: 'typing.Optional[uint]' = None
     alarmMask: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class PumpControlMode(IntEnum):
@@ -20145,7 +20145,7 @@ class Thermostat(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    localTemperature: 'int' = None
+    localTemperature: 'int' = 0
     outdoorTemperature: 'typing.Optional[int]' = None
     occupancy: 'typing.Optional[uint]' = None
     absMinHeatSetpointLimit: 'typing.Optional[int]' = None
@@ -20156,8 +20156,8 @@ class Thermostat(Cluster):
     piHeatingDemand: 'typing.Optional[uint]' = None
     hvacSystemTypeConfiguration: 'typing.Optional[uint]' = None
     localTemperatureCalibration: 'typing.Optional[int]' = None
-    occupiedCoolingSetpoint: 'int' = None
-    occupiedHeatingSetpoint: 'int' = None
+    occupiedCoolingSetpoint: 'int' = 0
+    occupiedHeatingSetpoint: 'int' = 0
     unoccupiedCoolingSetpoint: 'typing.Optional[int]' = None
     unoccupiedHeatingSetpoint: 'typing.Optional[int]' = None
     minHeatSetpointLimit: 'typing.Optional[int]' = None
@@ -20166,8 +20166,8 @@ class Thermostat(Cluster):
     maxCoolSetpointLimit: 'typing.Optional[int]' = None
     minSetpointDeadBand: 'typing.Optional[int]' = None
     remoteSensing: 'typing.Optional[uint]' = None
-    controlSequenceOfOperation: 'Thermostat.Enums.ThermostatControlSequence' = None
-    systemMode: 'uint' = None
+    controlSequenceOfOperation: 'Thermostat.Enums.ThermostatControlSequence' = 0
+    systemMode: 'uint' = 0
     alarmMask: 'typing.Optional[uint]' = None
     thermostatRunningMode: 'typing.Optional[uint]' = None
     startOfWeek: 'typing.Optional[uint]' = None
@@ -20188,11 +20188,11 @@ class Thermostat(Cluster):
     acLouverPosition: 'typing.Optional[uint]' = None
     acCoilTemperature: 'typing.Optional[int]' = None
     acCapacityFormat: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class SetpointAdjustMode(IntEnum):
@@ -21141,13 +21141,13 @@ class FanControl(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    fanMode: 'uint' = None
-    fanModeSequence: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    fanMode: 'uint' = 0
+    fanModeSequence: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -21291,18 +21291,18 @@ class DehumidificationControl(Cluster):
             ])
 
     relativeHumidity: 'typing.Optional[uint]' = None
-    dehumidificationCooling: 'uint' = None
-    rhDehumidificationSetpoint: 'uint' = None
+    dehumidificationCooling: 'uint' = 0
+    rhDehumidificationSetpoint: 'uint' = 0
     relativeHumidityMode: 'typing.Optional[uint]' = None
     dehumidificationLockout: 'typing.Optional[uint]' = None
-    dehumidificationHysteresis: 'uint' = None
-    dehumidificationMaxCool: 'uint' = None
+    dehumidificationHysteresis: 'uint' = 0
+    dehumidificationMaxCool: 'uint' = 0
     relativeHumidityDisplay: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -21536,14 +21536,14 @@ class ThermostatUserInterfaceConfiguration(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    temperatureDisplayMode: 'uint' = None
-    keypadLockout: 'uint' = None
+    temperatureDisplayMode: 'uint' = 0
+    keypadLockout: 'uint' = 0
     scheduleProgrammingVisibility: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -21749,13 +21749,13 @@ class ColorControl(Cluster):
     currentHue: 'typing.Optional[uint]' = None
     currentSaturation: 'typing.Optional[uint]' = None
     remainingTime: 'typing.Optional[uint]' = None
-    currentX: 'uint' = None
-    currentY: 'uint' = None
+    currentX: 'uint' = 0
+    currentY: 'uint' = 0
     driftCompensation: 'typing.Optional[uint]' = None
     compensationText: 'typing.Optional[str]' = None
     colorTemperature: 'typing.Optional[uint]' = None
     colorMode: 'typing.Optional[uint]' = None
-    colorControlOptions: 'uint' = None
+    colorControlOptions: 'uint' = 0
     numberOfPrimaries: 'typing.Optional[uint]' = None
     primary1X: 'typing.Optional[uint]' = None
     primary1Y: 'typing.Optional[uint]' = None
@@ -21796,13 +21796,13 @@ class ColorControl(Cluster):
     colorCapabilities: 'typing.Optional[uint]' = None
     colorTempPhysicalMin: 'typing.Optional[uint]' = None
     colorTempPhysicalMax: 'typing.Optional[uint]' = None
-    coupleColorTempToLevelMinMireds: 'uint' = None
-    startUpColorTemperatureMireds: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    coupleColorTempToLevelMinMireds: 'uint' = 0
+    startUpColorTemperatureMireds: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class ColorLoopAction(IntEnum):
@@ -23224,7 +23224,7 @@ class BallastConfiguration(Cluster):
 
     physicalMinLevel: 'typing.Optional[uint]' = None
     physicalMaxLevel: 'typing.Optional[uint]' = None
-    ballastStatus: 'uint' = None
+    ballastStatus: 'uint' = 0
     minLevel: 'typing.Optional[uint]' = None
     maxLevel: 'typing.Optional[uint]' = None
     powerOnLevel: 'typing.Optional[uint]' = None
@@ -23238,11 +23238,11 @@ class BallastConfiguration(Cluster):
     lampBurnHours: 'typing.Optional[uint]' = None
     lampAlarmMode: 'typing.Optional[uint]' = None
     lampBurnHoursTripPoint: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -23606,16 +23606,16 @@ class IlluminanceMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'typing.Union[Nullable, uint]' = None
-    minMeasuredValue: 'typing.Union[Nullable, uint]' = None
-    maxMeasuredValue: 'typing.Union[Nullable, uint]' = None
+    measuredValue: 'typing.Union[Nullable, uint]' = NullValue
+    minMeasuredValue: 'typing.Union[Nullable, uint]' = NullValue
+    maxMeasuredValue: 'typing.Union[Nullable, uint]' = NullValue
     tolerance: 'typing.Optional[uint]' = None
     lightSensorType: 'typing.Union[None, Nullable, uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class LightSensorType(IntEnum):
@@ -23807,15 +23807,15 @@ class TemperatureMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'typing.Union[Nullable, int]' = None
-    minMeasuredValue: 'typing.Union[Nullable, int]' = None
-    maxMeasuredValue: 'typing.Union[Nullable, int]' = None
+    measuredValue: 'typing.Union[Nullable, int]' = NullValue
+    minMeasuredValue: 'typing.Union[Nullable, int]' = NullValue
+    maxMeasuredValue: 'typing.Union[Nullable, int]' = NullValue
     tolerance: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -23991,20 +23991,20 @@ class PressureMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'typing.Union[Nullable, int]' = None
-    minMeasuredValue: 'typing.Union[Nullable, int]' = None
-    maxMeasuredValue: 'typing.Union[Nullable, int]' = None
+    measuredValue: 'typing.Union[Nullable, int]' = NullValue
+    minMeasuredValue: 'typing.Union[Nullable, int]' = NullValue
+    maxMeasuredValue: 'typing.Union[Nullable, int]' = NullValue
     tolerance: 'typing.Optional[uint]' = None
     scaledValue: 'typing.Union[None, Nullable, int]' = None
     minScaledValue: 'typing.Union[None, Nullable, int]' = None
     maxScaledValue: 'typing.Union[None, Nullable, int]' = None
     scaledTolerance: 'typing.Optional[uint]' = None
     scale: 'typing.Optional[int]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -24255,15 +24255,15 @@ class FlowMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'typing.Union[Nullable, uint]' = None
-    minMeasuredValue: 'typing.Union[Nullable, uint]' = None
-    maxMeasuredValue: 'typing.Union[Nullable, uint]' = None
+    measuredValue: 'typing.Union[Nullable, uint]' = NullValue
+    minMeasuredValue: 'typing.Union[Nullable, uint]' = NullValue
+    maxMeasuredValue: 'typing.Union[Nullable, uint]' = NullValue
     tolerance: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -24434,15 +24434,15 @@ class RelativeHumidityMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'uint' = None
-    minMeasuredValue: 'uint' = None
-    maxMeasuredValue: 'uint' = None
+    measuredValue: 'uint' = 0
+    minMeasuredValue: 'uint' = 0
+    maxMeasuredValue: 'uint' = 0
     tolerance: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -24621,9 +24621,9 @@ class OccupancySensing(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    occupancy: 'uint' = None
-    occupancySensorType: 'uint' = None
-    occupancySensorTypeBitmap: 'uint' = None
+    occupancy: 'uint' = 0
+    occupancySensorType: 'uint' = 0
+    occupancySensorTypeBitmap: 'uint' = 0
     pirOccupiedToUnoccupiedDelay: 'typing.Optional[uint]' = None
     pirUnoccupiedToOccupiedDelay: 'typing.Optional[uint]' = None
     pirUnoccupiedToOccupiedThreshold: 'typing.Optional[uint]' = None
@@ -24633,11 +24633,11 @@ class OccupancySensing(Cluster):
     physicalContactOccupiedToUnoccupiedDelay: 'typing.Optional[uint]' = None
     physicalContactUnoccupiedToOccupiedDelay: 'typing.Optional[uint]' = None
     physicalContactUnoccupiedToOccupiedThreshold: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -24936,15 +24936,15 @@ class CarbonMonoxideConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -25115,15 +25115,15 @@ class CarbonDioxideConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -25294,15 +25294,15 @@ class EthyleneConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -25473,15 +25473,15 @@ class EthyleneOxideConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -25652,15 +25652,15 @@ class HydrogenConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -25831,15 +25831,15 @@ class HydrogenSulphideConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -26010,15 +26010,15 @@ class NitricOxideConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -26189,15 +26189,15 @@ class NitrogenDioxideConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -26368,15 +26368,15 @@ class OxygenConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -26547,15 +26547,15 @@ class OzoneConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -26726,15 +26726,15 @@ class SulfurDioxideConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -26905,15 +26905,15 @@ class DissolvedOxygenConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -27084,15 +27084,15 @@ class BromateConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -27263,15 +27263,15 @@ class ChloraminesConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -27442,15 +27442,15 @@ class ChlorineConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -27621,15 +27621,15 @@ class FecalColiformAndEColiConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -27800,15 +27800,15 @@ class FluorideConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -27979,15 +27979,15 @@ class HaloaceticAcidsConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -28158,15 +28158,15 @@ class TotalTrihalomethanesConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -28337,15 +28337,15 @@ class TotalColiformBacteriaConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -28516,15 +28516,15 @@ class TurbidityConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -28695,15 +28695,15 @@ class CopperConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -28874,15 +28874,15 @@ class LeadConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -29053,15 +29053,15 @@ class ManganeseConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -29232,15 +29232,15 @@ class SulfateConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -29411,15 +29411,15 @@ class BromodichloromethaneConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -29590,15 +29590,15 @@ class BromoformConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -29769,15 +29769,15 @@ class ChlorodibromomethaneConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -29948,15 +29948,15 @@ class ChloroformConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -30127,15 +30127,15 @@ class SodiumConcentrationMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    measuredValue: 'float32' = None
-    minMeasuredValue: 'float32' = None
-    maxMeasuredValue: 'float32' = None
+    measuredValue: 'float32' = 0.0
+    minMeasuredValue: 'float32' = 0.0
+    maxMeasuredValue: 'float32' = 0.0
     tolerance: 'typing.Optional[float32]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -30309,18 +30309,18 @@ class IasZone(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    zoneState: 'uint' = None
-    zoneType: 'uint' = None
-    zoneStatus: 'uint' = None
-    iasCieAddress: 'uint' = None
-    zoneId: 'uint' = None
+    zoneState: 'uint' = 0
+    zoneType: 'uint' = 0
+    zoneStatus: 'uint' = 0
+    iasCieAddress: 'uint' = 0
+    zoneId: 'uint' = 0
     numberOfZoneSensitivityLevelsSupported: 'typing.Optional[uint]' = None
     currentZoneSensitivityLevel: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class IasEnrollResponseCode(IntEnum):
@@ -30672,11 +30672,11 @@ class IasAce(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class IasAceAlarmStatus(IntEnum):
@@ -31213,12 +31213,12 @@ class IasWd(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    maxDuration: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    maxDuration: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -31376,11 +31376,11 @@ class WakeOnLan(Cluster):
             ])
 
     MACAddress: 'typing.Optional[str]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -31505,11 +31505,11 @@ class Channel(Cluster):
     channelList: 'typing.Optional[typing.List[Channel.Structs.ChannelInfo]]' = None
     lineup: 'typing.Union[None, Nullable, Channel.Structs.LineupInfo]' = None
     currentChannel: 'typing.Union[None, Nullable, Channel.Structs.ChannelInfo]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class LineupInfoTypeEnum(IntEnum):
@@ -31774,13 +31774,13 @@ class TargetNavigator(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    targetList: 'typing.List[TargetNavigator.Structs.TargetInfo]' = None
+    targetList: 'typing.List[TargetNavigator.Structs.TargetInfo]' = field(default_factory=lambda: [])
     currentTarget: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class StatusEnum(IntEnum):
@@ -31978,18 +31978,18 @@ class MediaPlayback(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    currentState: 'MediaPlayback.Enums.PlaybackStateEnum' = None
+    currentState: 'MediaPlayback.Enums.PlaybackStateEnum' = 0
     startTime: 'typing.Union[None, Nullable, uint]' = None
     duration: 'typing.Union[None, Nullable, uint]' = None
     sampledPosition: 'typing.Union[None, Nullable, MediaPlayback.Structs.PlaybackPosition]' = None
     playbackSpeed: 'typing.Optional[float32]' = None
     seekRangeEnd: 'typing.Union[None, Nullable, uint]' = None
     seekRangeStart: 'typing.Union[None, Nullable, uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class PlaybackStateEnum(IntEnum):
@@ -32403,13 +32403,13 @@ class MediaInput(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    inputList: 'typing.List[MediaInput.Structs.InputInfo]' = None
+    inputList: 'typing.List[MediaInput.Structs.InputInfo]' = field(default_factory=lambda: [])
     currentInput: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class InputTypeEnum(IntEnum):
@@ -32637,11 +32637,11 @@ class LowPower(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -32758,11 +32758,11 @@ class KeypadInput(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class CecKeyCode(IntEnum):
@@ -32994,11 +32994,11 @@ class ContentLauncher(Cluster):
 
     acceptHeader: 'typing.Optional[typing.List[str]]' = None
     supportedStreamingProtocols: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class MetricTypeEnum(IntEnum):
@@ -33308,13 +33308,13 @@ class AudioOutput(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    outputList: 'typing.List[AudioOutput.Structs.OutputInfo]' = None
+    outputList: 'typing.List[AudioOutput.Structs.OutputInfo]' = field(default_factory=lambda: [])
     currentOutput: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class OutputTypeEnum(IntEnum):
@@ -33510,13 +33510,13 @@ class ApplicationLauncher(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    catalogList: 'typing.List[uint]' = None
+    catalogList: 'typing.List[uint]' = field(default_factory=lambda: [])
     currentApp: 'typing.Union[None, Nullable, ApplicationLauncher.Structs.ApplicationEP]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class StatusEnum(IntEnum):
@@ -33760,17 +33760,17 @@ class ApplicationBasic(Cluster):
 
     vendorName: 'typing.Optional[str]' = None
     vendorID: 'typing.Optional[uint]' = None
-    applicationName: 'str' = None
+    applicationName: 'str' = ""
     productID: 'typing.Optional[uint]' = None
-    application: 'ApplicationBasic.Structs.ApplicationBasicApplication' = None
-    status: 'ApplicationBasic.Enums.ApplicationStatusEnum' = None
-    applicationVersion: 'str' = None
-    allowedVendorList: 'typing.List[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    application: 'ApplicationBasic.Structs.ApplicationBasicApplication' = field(default_factory=lambda: ApplicationBasic.Structs.ApplicationBasicApplication())
+    status: 'ApplicationBasic.Enums.ApplicationStatusEnum' = 0
+    applicationVersion: 'str' = ""
+    allowedVendorList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class ApplicationStatusEnum(IntEnum):
@@ -34023,11 +34023,11 @@ class AccountLogin(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -34284,92 +34284,92 @@ class TestCluster(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    boolean: 'bool' = None
-    bitmap8: 'uint' = None
-    bitmap16: 'uint' = None
-    bitmap32: 'uint' = None
-    bitmap64: 'uint' = None
-    int8u: 'uint' = None
-    int16u: 'uint' = None
-    int24u: 'uint' = None
-    int32u: 'uint' = None
-    int40u: 'uint' = None
-    int48u: 'uint' = None
-    int56u: 'uint' = None
-    int64u: 'uint' = None
-    int8s: 'int' = None
-    int16s: 'int' = None
-    int24s: 'int' = None
-    int32s: 'int' = None
-    int40s: 'int' = None
-    int48s: 'int' = None
-    int56s: 'int' = None
-    int64s: 'int' = None
-    enum8: 'uint' = None
-    enum16: 'uint' = None
-    floatSingle: 'float32' = None
-    floatDouble: 'float' = None
-    octetString: 'bytes' = None
-    listInt8u: 'typing.List[uint]' = None
-    listOctetString: 'typing.List[bytes]' = None
-    listStructOctetString: 'typing.List[TestCluster.Structs.TestListStructOctet]' = None
-    longOctetString: 'bytes' = None
-    charString: 'str' = None
-    longCharString: 'str' = None
-    epochUs: 'uint' = None
-    epochS: 'uint' = None
-    vendorId: 'uint' = None
-    listNullablesAndOptionalsStruct: 'typing.List[TestCluster.Structs.NullablesAndOptionalsStruct]' = None
-    enumAttr: 'TestCluster.Enums.SimpleEnum' = None
-    structAttr: 'TestCluster.Structs.SimpleStruct' = None
-    rangeRestrictedInt8u: 'uint' = None
-    rangeRestrictedInt8s: 'int' = None
-    rangeRestrictedInt16u: 'uint' = None
-    rangeRestrictedInt16s: 'int' = None
-    listLongOctetString: 'typing.List[bytes]' = None
-    listFabricScoped: 'typing.List[TestCluster.Structs.TestFabricScoped]' = None
-    timedWriteBoolean: 'bool' = None
-    generalErrorBoolean: 'bool' = None
-    clusterErrorBoolean: 'bool' = None
-    unsupported: 'bool' = None
-    nullableBoolean: 'typing.Union[Nullable, bool]' = None
-    nullableBitmap8: 'typing.Union[Nullable, uint]' = None
-    nullableBitmap16: 'typing.Union[Nullable, uint]' = None
-    nullableBitmap32: 'typing.Union[Nullable, uint]' = None
-    nullableBitmap64: 'typing.Union[Nullable, uint]' = None
-    nullableInt8u: 'typing.Union[Nullable, uint]' = None
-    nullableInt16u: 'typing.Union[Nullable, uint]' = None
-    nullableInt24u: 'typing.Union[Nullable, uint]' = None
-    nullableInt32u: 'typing.Union[Nullable, uint]' = None
-    nullableInt40u: 'typing.Union[Nullable, uint]' = None
-    nullableInt48u: 'typing.Union[Nullable, uint]' = None
-    nullableInt56u: 'typing.Union[Nullable, uint]' = None
-    nullableInt64u: 'typing.Union[Nullable, uint]' = None
-    nullableInt8s: 'typing.Union[Nullable, int]' = None
-    nullableInt16s: 'typing.Union[Nullable, int]' = None
-    nullableInt24s: 'typing.Union[Nullable, int]' = None
-    nullableInt32s: 'typing.Union[Nullable, int]' = None
-    nullableInt40s: 'typing.Union[Nullable, int]' = None
-    nullableInt48s: 'typing.Union[Nullable, int]' = None
-    nullableInt56s: 'typing.Union[Nullable, int]' = None
-    nullableInt64s: 'typing.Union[Nullable, int]' = None
-    nullableEnum8: 'typing.Union[Nullable, uint]' = None
-    nullableEnum16: 'typing.Union[Nullable, uint]' = None
-    nullableFloatSingle: 'typing.Union[Nullable, float32]' = None
-    nullableFloatDouble: 'typing.Union[Nullable, float]' = None
-    nullableOctetString: 'typing.Union[Nullable, bytes]' = None
-    nullableCharString: 'typing.Union[Nullable, str]' = None
-    nullableEnumAttr: 'typing.Union[Nullable, TestCluster.Enums.SimpleEnum]' = None
-    nullableStruct: 'typing.Union[Nullable, TestCluster.Structs.SimpleStruct]' = None
-    nullableRangeRestrictedInt8u: 'typing.Union[Nullable, uint]' = None
-    nullableRangeRestrictedInt8s: 'typing.Union[Nullable, int]' = None
-    nullableRangeRestrictedInt16u: 'typing.Union[Nullable, uint]' = None
-    nullableRangeRestrictedInt16s: 'typing.Union[Nullable, int]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    boolean: 'bool' = False
+    bitmap8: 'uint' = 0
+    bitmap16: 'uint' = 0
+    bitmap32: 'uint' = 0
+    bitmap64: 'uint' = 0
+    int8u: 'uint' = 0
+    int16u: 'uint' = 0
+    int24u: 'uint' = 0
+    int32u: 'uint' = 0
+    int40u: 'uint' = 0
+    int48u: 'uint' = 0
+    int56u: 'uint' = 0
+    int64u: 'uint' = 0
+    int8s: 'int' = 0
+    int16s: 'int' = 0
+    int24s: 'int' = 0
+    int32s: 'int' = 0
+    int40s: 'int' = 0
+    int48s: 'int' = 0
+    int56s: 'int' = 0
+    int64s: 'int' = 0
+    enum8: 'uint' = 0
+    enum16: 'uint' = 0
+    floatSingle: 'float32' = 0.0
+    floatDouble: 'float' = 0.0
+    octetString: 'bytes' = b""
+    listInt8u: 'typing.List[uint]' = field(default_factory=lambda: [])
+    listOctetString: 'typing.List[bytes]' = field(default_factory=lambda: [])
+    listStructOctetString: 'typing.List[TestCluster.Structs.TestListStructOctet]' = field(default_factory=lambda: [])
+    longOctetString: 'bytes' = b""
+    charString: 'str' = ""
+    longCharString: 'str' = ""
+    epochUs: 'uint' = 0
+    epochS: 'uint' = 0
+    vendorId: 'uint' = 0
+    listNullablesAndOptionalsStruct: 'typing.List[TestCluster.Structs.NullablesAndOptionalsStruct]' = field(default_factory=lambda: [])
+    enumAttr: 'TestCluster.Enums.SimpleEnum' = 0
+    structAttr: 'TestCluster.Structs.SimpleStruct' = field(default_factory=lambda: TestCluster.Structs.SimpleStruct())
+    rangeRestrictedInt8u: 'uint' = 0
+    rangeRestrictedInt8s: 'int' = 0
+    rangeRestrictedInt16u: 'uint' = 0
+    rangeRestrictedInt16s: 'int' = 0
+    listLongOctetString: 'typing.List[bytes]' = field(default_factory=lambda: [])
+    listFabricScoped: 'typing.List[TestCluster.Structs.TestFabricScoped]' = field(default_factory=lambda: [])
+    timedWriteBoolean: 'bool' = False
+    generalErrorBoolean: 'bool' = False
+    clusterErrorBoolean: 'bool' = False
+    unsupported: 'bool' = False
+    nullableBoolean: 'typing.Union[Nullable, bool]' = NullValue
+    nullableBitmap8: 'typing.Union[Nullable, uint]' = NullValue
+    nullableBitmap16: 'typing.Union[Nullable, uint]' = NullValue
+    nullableBitmap32: 'typing.Union[Nullable, uint]' = NullValue
+    nullableBitmap64: 'typing.Union[Nullable, uint]' = NullValue
+    nullableInt8u: 'typing.Union[Nullable, uint]' = NullValue
+    nullableInt16u: 'typing.Union[Nullable, uint]' = NullValue
+    nullableInt24u: 'typing.Union[Nullable, uint]' = NullValue
+    nullableInt32u: 'typing.Union[Nullable, uint]' = NullValue
+    nullableInt40u: 'typing.Union[Nullable, uint]' = NullValue
+    nullableInt48u: 'typing.Union[Nullable, uint]' = NullValue
+    nullableInt56u: 'typing.Union[Nullable, uint]' = NullValue
+    nullableInt64u: 'typing.Union[Nullable, uint]' = NullValue
+    nullableInt8s: 'typing.Union[Nullable, int]' = NullValue
+    nullableInt16s: 'typing.Union[Nullable, int]' = NullValue
+    nullableInt24s: 'typing.Union[Nullable, int]' = NullValue
+    nullableInt32s: 'typing.Union[Nullable, int]' = NullValue
+    nullableInt40s: 'typing.Union[Nullable, int]' = NullValue
+    nullableInt48s: 'typing.Union[Nullable, int]' = NullValue
+    nullableInt56s: 'typing.Union[Nullable, int]' = NullValue
+    nullableInt64s: 'typing.Union[Nullable, int]' = NullValue
+    nullableEnum8: 'typing.Union[Nullable, uint]' = NullValue
+    nullableEnum16: 'typing.Union[Nullable, uint]' = NullValue
+    nullableFloatSingle: 'typing.Union[Nullable, float32]' = NullValue
+    nullableFloatDouble: 'typing.Union[Nullable, float]' = NullValue
+    nullableOctetString: 'typing.Union[Nullable, bytes]' = NullValue
+    nullableCharString: 'typing.Union[Nullable, str]' = NullValue
+    nullableEnumAttr: 'typing.Union[Nullable, TestCluster.Enums.SimpleEnum]' = NullValue
+    nullableStruct: 'typing.Union[Nullable, TestCluster.Structs.SimpleStruct]' = NullValue
+    nullableRangeRestrictedInt8u: 'typing.Union[Nullable, uint]' = NullValue
+    nullableRangeRestrictedInt8s: 'typing.Union[Nullable, int]' = NullValue
+    nullableRangeRestrictedInt16u: 'typing.Union[Nullable, uint]' = NullValue
+    nullableRangeRestrictedInt16s: 'typing.Union[Nullable, int]' = NullValue
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class SimpleEnum(IntEnum):
@@ -36592,11 +36592,11 @@ class Messaging(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class EventId(IntEnum):
@@ -36947,7 +36947,7 @@ class ApplianceIdentification(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    basicIdentification: 'uint' = None
+    basicIdentification: 'uint' = 0
     companyName: 'typing.Optional[str]' = None
     companyId: 'typing.Optional[uint]' = None
     brandName: 'typing.Optional[str]' = None
@@ -36959,11 +36959,11 @@ class ApplianceIdentification(Cluster):
     productTypeName: 'typing.Optional[bytes]' = None
     productTypeId: 'typing.Optional[uint]' = None
     cecedSpecificationVersion: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -37270,23 +37270,23 @@ class MeterIdentification(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    companyName: 'str' = None
-    meterTypeId: 'uint' = None
-    dataQualityId: 'uint' = None
+    companyName: 'str' = ""
+    meterTypeId: 'uint' = 0
+    dataQualityId: 'uint' = 0
     customerName: 'typing.Optional[str]' = None
     model: 'typing.Optional[bytes]' = None
     partNumber: 'typing.Optional[bytes]' = None
     productRevision: 'typing.Optional[bytes]' = None
     softwareRevision: 'typing.Optional[bytes]' = None
     utilityName: 'typing.Optional[str]' = None
-    pod: 'str' = None
-    availablePower: 'int' = None
-    powerThreshold: 'int' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    pod: 'str' = ""
+    availablePower: 'int' = 0
+    powerThreshold: 'int' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -37581,11 +37581,11 @@ class ApplianceEventsAndAlert(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
     class Enums:
         class EventIdentification(IntEnum):
@@ -37763,13 +37763,13 @@ class ApplianceStatistics(Cluster):
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    logMaxSize: 'uint' = None
-    logQueueMaxSize: 'uint' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    logMaxSize: 'uint' = 0
+    logQueueMaxSize: 'uint' = 0
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
@@ -38265,11 +38265,11 @@ class ElectricalMeasurement(Cluster):
     rmsExtremeUnderVoltagePeriodPhaseC: 'typing.Optional[uint]' = None
     rmsVoltageSagPeriodPhaseC: 'typing.Optional[uint]' = None
     rmsVoltageSwellPeriodPhaseC: 'typing.Optional[uint]' = None
-    generatedCommandList: 'typing.List[uint]' = None
-    acceptedCommandList: 'typing.List[uint]' = None
-    attributeList: 'typing.List[uint]' = None
+    generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'typing.Optional[uint]' = None
-    clusterRevision: 'uint' = None
+    clusterRevision: 'uint' = 0
 
 
 
