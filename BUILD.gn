@@ -268,6 +268,10 @@ if (current_toolchain != "${dir_pw_toolchain}/default:default") {
     enable_linux_tv_casting_app_build =
         enable_default_builds && (host_os == "linux" || host_os == "mac")
 
+    # Build the OTA provider app example.
+    enable_linux_ota_provider_app_build =
+        enable_default_builds && (host_os == "linux" || host_os == "mac")
+
     # Build the Linux bridge app example.
     enable_linux_bridge_app_build =
         enable_default_builds && (host_os == "linux" || host_os == "mac")
@@ -467,6 +471,16 @@ if (current_toolchain != "${dir_pw_toolchain}/default:default") {
     }
 
     extra_build_deps += [ ":linux_thermostat_app" ]
+  }
+
+  if (enable_linux_ota_provider_app_build) {
+    group("linux_ota_provider_app") {
+      deps = [
+        "${chip_root}/examples/ota-provider-app/linux(${standalone_toolchain})",
+      ]
+    }
+
+    extra_build_deps += [ ":linux_ota_provider_app" ]
   }
 
   if (enable_linux_tv_app_build) {
