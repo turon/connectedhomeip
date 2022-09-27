@@ -88,6 +88,7 @@ void LogV(uint8_t module, uint8_t category, const char * msg, va_list args) ENFO
 void Log(uint8_t module, uint8_t category, const char * msg, ...) ENFORCE_FORMAT(3, 4);
 
 void LogByteSpan(uint8_t module, uint8_t category, const ByteSpan & span);
+void Dump(uint8_t module, uint8_t category, const char * msg, const void * aBuf, const unsigned aLength);
 
 uint8_t GetLogFilter();
 void SetLogFilter(uint8_t category);
@@ -113,7 +114,7 @@ void SetLogFilter(uint8_t category);
 #if CHIP_PW_TOKENIZER_LOGGING
 #define ChipLogError(MOD, MSG, ...)                                                                                                \
     PW_TOKENIZE_TO_GLOBAL_HANDLER_WITH_PAYLOAD(                                                                                    \
-        (pw_tokenizer_Payload)((chip::Logging::kLogCategory_Error << 8) | chip::Logging::kLogModule_##MOD), MSG, __VA_ARGS__)
+        (pw_tokenizer_Payload) ((chip::Logging::kLogCategory_Error << 8) | chip::Logging::kLogModule_##MOD), MSG, __VA_ARGS__)
 #else
 #define ChipLogError(MOD, MSG, ...)                                                                                                \
     chip::Logging::Log(chip::Logging::kLogModule_##MOD, chip::Logging::kLogCategory_Error, MSG, ##__VA_ARGS__)
@@ -140,7 +141,7 @@ void SetLogFilter(uint8_t category);
 #if CHIP_PW_TOKENIZER_LOGGING
 #define ChipLogProgress(MOD, MSG, ...)                                                                                             \
     PW_TOKENIZE_TO_GLOBAL_HANDLER_WITH_PAYLOAD(                                                                                    \
-        (pw_tokenizer_Payload)((chip::Logging::kLogCategory_Progress << 8) | chip::Logging::kLogModule_##MOD), MSG, __VA_ARGS__)
+        (pw_tokenizer_Payload) ((chip::Logging::kLogCategory_Progress << 8) | chip::Logging::kLogModule_##MOD), MSG, __VA_ARGS__)
 #else
 #define ChipLogProgress(MOD, MSG, ...)                                                                                             \
     chip::Logging::Log(chip::Logging::kLogModule_##MOD, chip::Logging::kLogCategory_Progress, MSG, ##__VA_ARGS__)
@@ -167,7 +168,7 @@ void SetLogFilter(uint8_t category);
 #if CHIP_PW_TOKENIZER_LOGGING
 #define ChipLogDetail(MOD, MSG, ...)                                                                                               \
     PW_TOKENIZE_TO_GLOBAL_HANDLER_WITH_PAYLOAD(                                                                                    \
-        (pw_tokenizer_Payload)((chip::Logging::kLogCategory_Detail << 8) | chip::Logging::kLogModule_##MOD), MSG, __VA_ARGS__)
+        (pw_tokenizer_Payload) ((chip::Logging::kLogCategory_Detail << 8) | chip::Logging::kLogModule_##MOD), MSG, __VA_ARGS__)
 #else
 #define ChipLogDetail(MOD, MSG, ...)                                                                                               \
     chip::Logging::Log(chip::Logging::kLogModule_##MOD, chip::Logging::kLogCategory_Detail, MSG, ##__VA_ARGS__)
@@ -182,16 +183,18 @@ void SetLogFilter(uint8_t category);
 #define ChipLogDumpDetail(MOD, MSG, BUF, LEN)                                                                                      \
     chip::Logging::Dump(chip::Logging::kLogModule_##MOD, chip::Logging::kLogCategory_Detail, MSG, BUF, LEN)
 #endif
-#else
+#else //
 #define ChipLogDumpDetail(MOD, MSG, BUF, LEN) ((void) 0)
+#endif // CHIP_DETAIL_LOGGING
 
+#if CHIP_DETAIL_LOGGING
 #ifndef ChipLogByteSpan
 #define ChipLogByteSpan(MOD, DATA)                                                                                                 \
     chip::Logging::LogByteSpan(chip::Logging::kLogModule_##MOD, chip::Logging::kLogCategory_Detail, DATA)
 #endif
-#else
+#else // CHIP_DETAIL_LOGGING
 #define ChipLogByteSpan(MOD, DATA) ((void) 0)
-#endif
+#endif // CHIP_DETAIL_LOGGING
 
 #ifndef CHIP_AUTOMATION_LOGGING
 #define CHIP_AUTOMATION_LOGGING 1
@@ -210,7 +213,7 @@ void SetLogFilter(uint8_t category);
 #if CHIP_PW_TOKENIZER_LOGGING
 #define ChipLogAutomation(MSG, ...)                                                                                                \
     PW_TOKENIZE_TO_GLOBAL_HANDLER_WITH_PAYLOAD(                                                                                    \
-        (pw_tokenizer_Payload)((chip::Logging::kLogModule_Automation << 8) | chip::Logging::kLogModule_Automation), MSG,           \
+        (pw_tokenizer_Payload) ((chip::Logging::kLogModule_Automation << 8) | chip::Logging::kLogModule_Automation), MSG,          \
         __VA_ARGS__)
 #else
 #define ChipLogAutomation(MSG, ...)                                                                                                \

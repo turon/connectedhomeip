@@ -306,7 +306,7 @@ static void DumpLine(uint8_t module, uint8_t category, const void * aBuf, const 
     {
         char c = 0x7f & ((char *) (aBuf))[i];
 
-        if (i < aLength && isprint(c))
+        if (i < aLength) // && isprint(c))
         {
             snprintf(cur, sizeof(buf) - static_cast<size_t>(cur - buf), "%c", c);
             cur += strlen(cur);

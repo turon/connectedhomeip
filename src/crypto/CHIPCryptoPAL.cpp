@@ -29,6 +29,7 @@
 #include <lib/support/BytesToHex.h>
 #include <lib/support/CodeUtils.h>
 #include <lib/support/Span.h>
+#include <lib/support/logging/CHIPLogging.h>
 #include <string.h>
 
 using chip::ByteSpan;
@@ -355,9 +356,9 @@ CHIP_ERROR Spake2p::ComputeRoundOne(const uint8_t * pab, size_t pab_len, uint8_t
     SuccessOrExit(error = PointAddMul(XY, G, xy, MN, w0));
     SuccessOrExit(error = PointWrite(XY, out, *out_len));
 
-    //uint8_t point_buffer[kMAX_Point_Length];
-    //SuccessOrExit(error = PointWrite(w0, point_buffer, point_size));
-    //ChipLogDumpDetail(SecureChannel, "w0", point_buffer, unsigned(point_size));
+    // uint8_t point_buffer[kMAX_Point_Length];
+    // SuccessOrExit(error = PointWrite(w0, point_buffer, point_size));
+    // ChipLogDumpDetail(SecureChannel, "w0", point_buffer, unsigned(point_size));
 
     if (role == CHIP_SPAKE2P_ROLE::PROVER)
     {
@@ -456,17 +457,17 @@ CHIP_ERROR Spake2p::ComputeRoundTwo(const uint8_t * in, size_t in_len, uint8_t *
     SuccessOrExit(error = Mac(Kcaorb, hash_size / 2, in, in_len, out_span));
     VerifyOrExit(out_span.size() == hash_size, error = CHIP_ERROR_INTERNAL);
 
-    ChipLogDumpDetail(SecureChannel, "Ka", Ka, unsigned(hash_size/2));
-    ChipLogDumpDetail(SecureChannel, "Ke", Ke, unsigned(hash_size/2));
+    ChipLogDumpDetail(SecureChannel, "Ka", Ka, unsigned(hash_size / 2));
+    ChipLogDumpDetail(SecureChannel, "Ke", Ke, unsigned(hash_size / 2));
 
     if (role == CHIP_SPAKE2P_ROLE::PROVER)
     {
-        ChipLogDumpDetail(SecureChannel, "Kca", Kcaorb, unsigned(hash_size/2));
+        ChipLogDumpDetail(SecureChannel, "Kca", Kcaorb, unsigned(hash_size / 2));
         ChipLogDumpDetail(SecureChannel, "cA", out, unsigned(*out_len));
     }
     else if (role == CHIP_SPAKE2P_ROLE::VERIFIER)
     {
-        ChipLogDumpDetail(SecureChannel, "Kcb", Kcaorb, unsigned(hash_size/2));
+        ChipLogDumpDetail(SecureChannel, "Kcb", Kcaorb, unsigned(hash_size / 2));
         ChipLogDumpDetail(SecureChannel, "cB", out, unsigned(*out_len));
     }
 
@@ -530,11 +531,11 @@ CHIP_ERROR Spake2p::GetKeys(uint8_t * out, size_t * out_len)
     VerifyOrExit(state == CHIP_SPAKE2P_STATE::KC, error = CHIP_ERROR_INTERNAL);
     VerifyOrExit(*out_len >= hash_size / 2, error = CHIP_ERROR_INVALID_ARGUMENT);
 
-    ChipLogDumpDetail(SecureChannel, "Ke", Ke, unsigned(hash_size/2));
+    ChipLogDumpDetail(SecureChannel, "Ke", Ke, unsigned(hash_size / 2));
 
     memcpy(out, Ke, hash_size / 2);
 
-    ChipLogDumpDetail(SecureChannel, "Ke out", out, unsigned(hash_size/2));
+    ChipLogDumpDetail(SecureChannel, "Ke out", out, unsigned(hash_size / 2));
 
     error = CHIP_NO_ERROR;
 exit:

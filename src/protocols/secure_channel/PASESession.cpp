@@ -262,11 +262,11 @@ CHIP_ERROR PASESession::SendPBKDFParamRequest()
 
     const size_t mrpParamsSize = mLocalMRPConfig.HasValue() ? TLV::EstimateStructOverhead(sizeof(uint16_t), sizeof(uint16_t)) : 0;
     const size_t max_msg_len   = TLV::EstimateStructOverhead(kPBKDFParamRandomNumberSize, // initiatorRandom,
-                                                           sizeof(uint16_t),            // initiatorSessionId
-                                                           sizeof(PasscodeId),          // passcodeId,
-                                                           sizeof(uint8_t),             // hasPBKDFParameters
-                                                           mrpParamsSize                // MRP Parameters
-    );
+                                                             sizeof(uint16_t),            // initiatorSessionId
+                                                             sizeof(PasscodeId),          // passcodeId,
+                                                             sizeof(uint8_t),             // hasPBKDFParameters
+                                                             mrpParamsSize                // MRP Parameters
+      );
 
     System::PacketBufferHandle req = System::PacketBufferHandle::New(max_msg_len);
     VerifyOrReturnError(!req.IsNull(), CHIP_ERROR_NO_MEMORY);
@@ -539,11 +539,13 @@ CHIP_ERROR PASESession::SendMsg1()
 
     constexpr uint8_t kPake1_pA = 1;
 
-    uint8_t point_buffer[kMAX_Point_Length];
-    ReturnErrorOnFailure(mSpake2p.FEWrite(mSpake2p.w0, point_buffer, sizeof(mPoint)/2));
-    ChipLogDumpDetail(SecureChannel, "w0 = mSpake2", point_buffer, sizeof(mPoint)/2);
-    ReturnErrorOnFailure(mSpake2p.FEWrite(mSpake2p.w1, point_buffer, sizeof(mPoint)/2));
-    ChipLogDumpDetail(SecureChannel, "w1 = mSpake2", point_buffer, sizeof(mPoint)/2);
+    /*
+        uint8_t point_buffer[kMAX_Point_Length];
+        ReturnErrorOnFailure(mSpake2p.FEWrite(mSpake2p.w0, point_buffer, sizeof(mPoint)/2));
+        ChipLogDumpDetail(SecureChannel, "w0 = mSpake2", point_buffer, sizeof(mPoint)/2);
+        ReturnErrorOnFailure(mSpake2p.FEWrite(mSpake2p.w1, point_buffer, sizeof(mPoint)/2));
+        ChipLogDumpDetail(SecureChannel, "w1 = mSpake2", point_buffer, sizeof(mPoint)/2);
+    */
 
     ReturnErrorOnFailure(mSpake2p.ComputeRoundOne(nullptr, 0, X, &X_len));
     VerifyOrReturnError(X_len == sizeof(X), CHIP_ERROR_INTERNAL);
@@ -592,7 +594,7 @@ CHIP_ERROR PASESession::HandleMsg1_and_SendMsg2(System::PacketBufferHandle && ms
 
     ChipLogDumpDetail(SecureChannel, "w0s", mPASEVerifier.mW0, kSpake2p_WS_Length);
     ChipLogDumpDetail(SecureChannel, "w1s", mPASEVerifier.mL, kSpake2p_WS_Length);
-    ChipLogDumpDetail(SecureChannel, "L = mPoint", mPoint, sizeof(mPoint));
+    // ChipLogDumpDetail(SecureChannel, "L = mPoint", mPoint, sizeof(mPoint));
 
     SuccessOrExit(err = mSpake2p.ComputeRoundOne(X, X_len, Y, &Y_len));
     VerifyOrReturnError(Y_len == sizeof(Y), CHIP_ERROR_INTERNAL);
