@@ -18,6 +18,7 @@ matter_idl_generator_sources = [
   "${chip_root}/scripts/py_matter_idl/matter_idl/generators/bridge/__init__.py",
   "${chip_root}/scripts/py_matter_idl/matter_idl/generators/cpp/__init__.py",
   "${chip_root}/scripts/py_matter_idl/matter_idl/generators/cpp/application/__init__.py",
+  "${chip_root}/scripts/py_matter_idl/matter_idl/generators/custom/__init__.py",
   "${chip_root}/scripts/py_matter_idl/matter_idl/generators/filters.py",
   "${chip_root}/scripts/py_matter_idl/matter_idl/generators/java/__init__.py",
   "${chip_root}/scripts/py_matter_idl/matter_idl/generators/types.py",

@@ -100,6 +100,7 @@ def main(log_level, generator, output_dir, dry_run, name_only, expected_outputs,
     Parses MATTER IDL files (.matter) and performs SDK code generation
     as set up by the program arguments.
     """
+
     if _has_coloredlogs:
         coloredlogs.install(level=__LOG_LEVELS__[
                             log_level], fmt='%(asctime)s %(levelname)-7s %(message)s')

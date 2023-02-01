@@ -17,7 +17,7 @@ import enum
 from matter_idl.generators.bridge import BridgeGenerator
 from matter_idl.generators.cpp.application import CppApplicationGenerator
 from matter_idl.generators.java import JavaGenerator
-
+from matter_idl.generators.custom import CustomGenerator
 
 class CodeGenerator(enum.Enum):
     """
@@ -28,6 +28,7 @@ class CodeGenerator(enum.Enum):
     JAVA = enum.auto()
     BRIDGE = enum.auto()
     CPP_APPLICATION = enum.auto()
+    CUSTOM = enum.auto()
 
     def Create(self, *args, **kargs):
         if self == CodeGenerator.JAVA:
@@ -36,6 +37,8 @@ class CodeGenerator(enum.Enum):
             return BridgeGenerator(*args, **kargs)
         elif self == CodeGenerator.CPP_APPLICATION:
             return CppApplicationGenerator(*args, **kargs)
+        elif self == CodeGenerator.CUSTOM:
+            return CustomGenerator(*args, **kargs)
         else:
             raise NameError("Unknown code generator type")
 
@@ -56,4 +59,5 @@ GENERATORS = {
     'java': CodeGenerator.JAVA,
     'bridge': CodeGenerator.BRIDGE,
     'cpp-app': CodeGenerator.CPP_APPLICATION,
+    'custom': CodeGenerator.CUSTOM,
 }
