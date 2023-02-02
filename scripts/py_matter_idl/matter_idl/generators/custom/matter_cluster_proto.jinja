@@ -23,43 +23,48 @@ message {{cluster.name}}Trait {
   option (message_type) = UDDM_TRAIT;
 
   enum ClusterId {
-    CLUSTER_ID_ZERO = 0;
+    CLUSTER_ID_UNSUPPORTED = 0;
     CLUSTER_ID = {{cluster.code}};
   }
 
   // Enums
 {%-   for entry in cluster.enums %}
   enum {{entry.name}} {
-      {% if (entry.entries[0].code != 0) %}{{"zero" | toEnumConstant(entry.name)}} = 0;{% endif %}
-      {%-  for field in entry.entries %}
-      {{field.name | toEnumConstant(entry.name)}} = {{field.code}};{%   endfor %}
+    {% if (entry.entries[0].code != 0) %}{{"unsupported" | toEnumConstant(entry.name)}} = 0;{% endif %}
+    {%-  for field in entry.entries %}
+    {{field.name | toEnumConstant(entry.name)}} = {{field.code}};{%   endfor %}
   }
 {%   endfor %}
 
   // Bitmaps
 {%-   for entry in cluster.bitmaps %}
   enum {{entry.name}} {
-      {{"zero" | toEnumConstant(entry.name)}} = 0;
-      {%-  for field in entry.entries %}
-      {{field.name | toEnumConstant(entry.name)}} = {{field.code}};{%   endfor %}
+    {{"unsupported" | toEnumConstant(entry.name)}} = 0;
+    {%-  for field in entry.entries %}
+    {{field.name | toEnumConstant(entry.name)}} = {{field.code}};{%   endfor %}
   }
 {%   endfor %}
 
   // Structs
 {%-   for entry in cluster.structs %}{% if not entry.tag %}
   message {{entry.name}} {
-      {%-  for field in entry.fields %}
-      {{field | toFieldComment}}
-      {{field | toFieldType}} {{field.name | toLowerSnakeCase}} = {{field | toFieldTag}};{%   endfor %}
+    {%-  for field in entry.fields %}
+    {{field | toFieldComment}}
+    {{field | toFieldType}} {{field.name | toLowerSnakeCase}} = {{field | toFieldTag}};{%   endfor %}
   }
 {% endif %}{%   endfor %}
 
   // Attributes
 {%-   for attr in cluster.attributes %}
   {{attr.definition.data_type.name | toProtobufType}} {{attr.definition.name | toLowerSnakeCase}} = {{attr.definition | toFieldTag()}}
-      [(attribute) = {
-           /* default_value: 0, */
-       }];
+    [(attribute) = {
+{%- if attr.is_writable %}
+      user_modifiable: true,{% endif %}
+{%- if attr.is_subscribable %}
+      // is_subscribable: true,{% endif %}
+{%- if attr.default %}
+      // default_value: {{attr.default}}{% endif %}
+    }];
 
 {%   endfor %}
 
@@ -68,15 +73,15 @@ message {{cluster.name}}Trait {
   message {{cmd.name}}Command {
     option (message_type) = UDDM_COMMAND;
     {% if cmd.input_param %}{%-  for field in cmd | commandArgs(cluster) %}
-      {{field | toFieldComment}}
-      {{field | toFieldType}} {{field.name | toLowerSnakeCase}} = {{field | toFieldTag}};{%   endfor %}{% endif %}
+    {{field | toFieldComment}}
+    {{field | toFieldType}} {{field.name | toLowerSnakeCase}} = {{field | toFieldTag}};{%   endfor %}{% endif %}
 }{% if cmd.output_param != "DefaultSuccess" %}
   
   message {{cmd.name}}CommandResponse {
     option (message_type) = UDDM_COMMAND_RESPONSE;
     {% if cmd.output_param %}{%-  for field in cmd | commandResponseArgs(cluster) %}
-      {{field | toFieldComment}}
-      {{field | toFieldType}} {{field.name | toLowerSnakeCase}} = {{field | toFieldTag}};{%   endfor %}{% endif %}
+    {{field | toFieldComment}}
+    {{field | toFieldType}} {{field.name | toLowerSnakeCase}} = {{field | toFieldTag}};{%   endfor %}{% endif %}
   }{% endif %}
 {%   endfor %}
 

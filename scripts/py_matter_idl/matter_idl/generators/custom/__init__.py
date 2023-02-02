@@ -42,7 +42,7 @@ def toLowerSnakeCase(s):
 def toUpperAcronym(s):
     """ Remove lower case letters and numbers from the given string"""
     # TODO: Keep numerals to solve unit_testing_trait issue.
-    return ''.join([i for i in s if i.isupper()]).upper()
+    return ''.join([i for i in s if i.isupper() or i.isnumeric()]).upper()
 
 def toEnumConstant(enumEntry, enumName):
     """ Create enum entry name by prepending that acronym of the enum name and converting to upper snake case """
