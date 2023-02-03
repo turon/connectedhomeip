@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+import jinja2
+
 from matter_idl.generators import CodeGenerator, GeneratorStorage
 from matter_idl.matter_idl_types import Idl, ClusterSide, Field, Attribute, Cluster, Command, DataType
 from matter_idl import matter_idl_types
@@ -41,7 +44,6 @@ def toLowerSnakeCase(s):
 
 def toUpperAcronym(s):
     """ Remove lower case letters and numbers from the given string"""
-    # TODO: Keep numerals to solve unit_testing_trait issue.
     return ''.join([i for i in s if i.isupper() or i.isnumeric()]).upper()
 
 def toEnumConstant(enumEntry, enumName):
@@ -257,6 +259,12 @@ class CustomGenerator(CodeGenerator):
         """
         super().__init__(storage, idl)
 
+        # Override the template path to use local templates within this plugin directory
+        self.jinja_env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader(
+                searchpath=os.path.dirname(__file__)),
+            keep_trailing_newline=True)
+
         # String helpers
         self.jinja_env.filters['toLowerSnakeCase'] = toLowerSnakeCase
         self.jinja_env.filters['toUpperSnakeCase'] = toUpperSnakeCase
@@ -293,7 +301,7 @@ class CustomGenerator(CodeGenerator):
 
             # Header containing a macro to initialize all cluster plugins
             self.internal_render_one_output(
-                template_path="custom/matter_cluster_proto.jinja",
+                template_path="./matter_cluster_proto.jinja",
                 output_file_name=filename,
                 vars={
                     'cluster': cluster,

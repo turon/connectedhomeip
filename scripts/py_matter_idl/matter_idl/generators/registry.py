@@ -17,8 +17,6 @@ import enum
 from matter_idl.generators.bridge import BridgeGenerator
 from matter_idl.generators.cpp.application import CppApplicationGenerator
 from matter_idl.generators.java import JavaGenerator
-from matter_idl.generators.custom import CustomGenerator
-
 class CodeGenerator(enum.Enum):
     """
     Represents every generator type supported by codegen and maps
@@ -38,6 +36,14 @@ class CodeGenerator(enum.Enum):
         elif self == CodeGenerator.CPP_APPLICATION:
             return CppApplicationGenerator(*args, **kargs)
         elif self == CodeGenerator.CUSTOM:
+            # Use a package naming convention to find the custom generator:
+            # ./matter_idl_plugin/__init__.py defines a subclass of CodeGenerator named CustomGenerator.
+            # The current working directory is added to the python path so that the custom generator
+            # can be found.
+            import os
+            import sys
+            sys.path.append(os.getcwd())
+            from matter_idl_plugin import CustomGenerator
             return CustomGenerator(*args, **kargs)
         else:
             raise NameError("Unknown code generator type")
